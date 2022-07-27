@@ -1,15 +1,33 @@
 const axios = require('axios');
 
+// load certificate data
+const certificates = require('../model/courses');
+
 
 exports.homeRoutes = (req, res) => {
+
+    res.render('index', {users: [], certificates: certificates});
+    
     // Make a get request to /api/users
-    axios.get('http://localhost:3000/api/users')
-        .then(function(response){
-            res.render('index', { users : response.data });
-        })
-        .catch(err =>{
-            res.send(err);
-        })
+    // axios.get('http://localhost:3000/api/users')
+    //     .then(function(response){
+    //         res.render('index', { users : response.data });
+    //     })
+    //     .catch(err =>{
+    //         res.send(err);
+    //     })
+
+    
+}
+
+exports.courses = (req, res) => {
+
+    var courses = req.body;
+
+    console.log(courses);
+
+    res.render('index', {users: [], certificates: certificates});
+    
 
     
 }

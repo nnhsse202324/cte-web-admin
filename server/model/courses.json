@@ -1,0 +1,118 @@
+{
+    "departments": [
+        {
+            "name": "Business",
+            "certificates": [
+                {
+                    "name": "Entrepreneurship",
+                    "semesters": 4,
+                    "courses": [
+                        {
+                            "name": "Introdution to Business",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Marketing",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Advanced Marketing",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Advertising",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Business INCubatoredu",
+                            "semesters": 2
+                        },
+                        {
+                            "name": "Blended Business ACCELeratoredu",
+                            "semesters": 2
+                        }
+                    ]
+                },
+                {
+                    "name": "Computer Science",
+                    "semesters": 4,
+                    "courses": [
+                        {
+                            "name": "Computer Programming 1",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Computer Programming 2",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "AP Computer Science A",
+                            "semesters": 2
+                        },
+                        {
+                            "name": "Software Engineering 1",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Software Engineering 2",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Game Design",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Web Page Design",
+                            "semesters": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Family and Consumer Sciences",
+            "certificates": [
+                {
+                    "name": "Culinary Arts",
+                    "semesters": 3,
+                    "courses": [
+                        {
+                            "name": "Culinary Arts and Nutrition 1",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Culinary Arts and Nutrition 2",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Culinary Arts and Nutrition 3",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Senior Foods",
+                            "semesters": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "Fashion and Design",
+                    "semesters": 3,
+                    "courses": [
+                        {
+                            "name": "Fashion Design",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Fashion Mechandising",
+                            "semesters": 1
+                        },
+                        {
+                            "name": "Interior Design",
+                            "semesters": 1
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

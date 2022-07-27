@@ -1,3 +1,30 @@
+<% for(var department of certificates.departments) { %>
+    <tr>
+        <td><%= department.name %></td>
+    </tr>
+
+    <% for(var certificate of department.certificates) { %>
+        <tr>
+            <td><%= certificate.name %></td>
+        </tr>
+
+        <% for(var course of certificate.courses) { %>
+            <tr>
+                <td><input type="checkbox" class="course" id="<%= course.name %>">
+                    <label for="<%= course.name %>"><%= course.name %></label>
+            </tr>
+            
+        <% } %>
+
+    <% } %>
+
+<% } %>
+
+<input type="button" value="Submit" onclick="submit()">
+
+
+<!-- !!! use javascript fetch instead of http post -->
+
 <% for(var i = 0; i < users.length; i++) { %>
 <tr>
     <td><%= i + 1 %></td>

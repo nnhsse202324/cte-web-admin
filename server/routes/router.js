@@ -22,6 +22,8 @@ route.get('/add-user', services.add_user)
  */
 route.get('/update-user', services.update_user)
 
+route.post('/courses', services.courses);
+
 
 // API
 route.post('/api/users', controller.create);
