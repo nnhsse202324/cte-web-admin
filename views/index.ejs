@@ -14,44 +14,63 @@
 
             <div class="accordion" id="departments">
 
-                <% for(var department of certificates.departments) { 
-                    var departmentID = department.name.replaceAll(" ", "_");
-                    var departmentHeading = "heading_" + departmentID %>
+                <% for(var department of certificates.departments) {
+                    var departmentID=department.name.replaceAll(" ", "_");
+                    var departmentHeading="heading_" + departmentID %>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="<%= departmentHeading %>">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#<%= departmentID %>" aria-expanded="true" aria-controls="<%= departmentID %>">
+                                data-bs-target="#<%= departmentID %>" aria-expanded="true"
+                                aria-controls="<%= departmentID %>">
                                 <%= department.name %>
                             </button>
                         </h2>
-                        <div id="<%= departmentID %>" class="accordion-collapse collapse show" aria-labelledby="<%= departmentHeading %>"
-                            data-bs-parent="#departments">
+                        <div id="<%= departmentID %>" class="accordion-collapse collapse show"
+                            aria-labelledby="<%= departmentHeading %>" data-bs-parent="#departments">
                             <div class="accordion-body">
-                                <% for(var certificate of department.certificates) { %>
-                                    <div class="certificate">
-                                        <%= certificate.name %>
+                                <div class="accordion" id="certificates">
+                                    <% for(var certificate of department.certificates) { 
+                                    var certificateID = certificate.name.replaceAll(" ", "_");
+                                    var certificateHeading = "heading_" + certificateID %>
+                                        <div class="accordion-item">
+                                            <h3 class="accordion-header" id="<%= certificateHeading %>">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#<%= certificateID %>" aria-expanded="true"
+                                                    aria-controls="<%= certificateID %>">
+                                                    <%= certificate.name %>
+                                                </button>
+                                            </h3>
+                                            <div id="<%= certificateID %>" class="accordion-collapse collapse show"
+                                                aria-labelledby="<%= certificateHeading %>"
+                                                data-bs-parent="#certificates">
+                                                <div class="accordion-body">
+                                                    <div class="list-group mx-0 w-auto">
+                                                        <% for(var course of certificate.courses) { 
+                                                            var courseID = course.name.replaceAll(" ", "_"); %>
 
-                                            <% for(var course of certificate.courses) { %>
-                                                <div class="course">
-                                                    <input type="checkbox" class="course_checkbox"
-                                                        id="<%= course.name %>">
-                                                    <label for="<%= course.name %>">
-                                                        <%= course.name %>
-                                                    </label>
+                                                            <label class="list-group-item d-flex gap-2">
+                                                              <input class="form-check-input flex-shrink-0 course_checkbox" type="checkbox" id="<%= course.name %>">
+                                                              <span>
+                                                                <%= course.name %>
+                                                                <small class="d-block text-muted"> <%= course.semesters %> semester(s)</small>
+                                                              </span>
+                                                            </label>
+
+                                                        <% } %>
+                                                    </div>
                                                 </div>
-
-                                                <% } %>
-
-                                    </div>
+                                            </div>
+                                        </div>
                                     <% } %>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <% } %>
+                <% } %>
             </div>
 
             <div class="submit_button">
-                <a class="btn btn-lg btn-primary" onclick="submit()" role="button">Submit Courses</a>
+                <a class="btn btn-lg btn-primary mt-2" onclick="submit()" role="button">Submit Courses</a>
             </div>
 
         </div>
