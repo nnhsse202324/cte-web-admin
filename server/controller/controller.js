@@ -1,4 +1,4 @@
-var Userdb = require('../model/model');
+var Student = require('../model/model');
 
 // create and save new user
 exports.create = (req,res)=>{
@@ -9,7 +9,7 @@ exports.create = (req,res)=>{
     }
 
     // new user
-    const user = new Userdb({
+    const user = new Student({
         name : req.body.name,
         email : req.body.email,
         gender: req.body.gender,
@@ -37,7 +37,7 @@ exports.find = (req, res)=>{
     if(req.query.id){
         const id = req.query.id;
 
-        Userdb.findById(id)
+        Student.findById(id)
             .then(data =>{
                 if(!data){
                     res.status(404).send({ message : "Not found user with id "+ id})
@@ -50,7 +50,7 @@ exports.find = (req, res)=>{
             })
 
     }else{
-        Userdb.find()
+        Student.find()
             .then(user => {
                 res.send(user)
             })
@@ -71,7 +71,7 @@ exports.update = (req, res)=>{
     }
 
     const id = req.params.id;
-    Userdb.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
+    Student.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
         .then(data => {
             if(!data){
                 res.status(404).send({ message : `Cannot Update user with ${id}. Maybe user not found!`})
@@ -88,7 +88,7 @@ exports.update = (req, res)=>{
 exports.delete = (req, res)=>{
     const id = req.params.id;
 
-    Userdb.findByIdAndDelete(id)
+    Student.findByIdAndDelete(id)
         .then(data => {
             if(!data){
                 res.status(404).send({ message : `Cannot Delete with id ${id}. Maybe id is wrong`})

@@ -23,6 +23,13 @@ route.get('/add-user', services.add_user)
 route.get('/update-user', services.update_user)
 
 route.post('/courses', services.courses);
+route.get('/certificates', services.certificates);
+route.post('/certificates', services.saveCertificates);
+route.get('/confirmation', services.confirmation);
+
+route.get('/login', services.login);
+route.post('/auth/v1/google', services.googleAuth);
+
 
 
 // API

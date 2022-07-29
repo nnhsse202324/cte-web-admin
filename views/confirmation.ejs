@@ -1,0 +1,25 @@
+
+<!-- include header -->
+<%- include('include/_header') %>
+<!-- /include header -->
+
+
+    <!-- Main Site -->
+    <main id="site-main">
+        <div class="container">
+
+            <% for(var certificate of certificates) { %>
+                <div class="certificate">
+                    <%= certificate.name %>
+                </div>
+        
+            <% } %>
+        </div>
+
+    </main>
+<!-- /Main Site -->
+
+
+<!-- include footer -->
+<%- include('include/_footer') %>
+<!-- /include footer -->
