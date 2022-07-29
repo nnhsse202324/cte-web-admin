@@ -42,10 +42,15 @@
                                                 <div class="accordion-body">
                                                     <div class="list-group mx-0 w-auto">
                                                         <% for(var course of certificate.courses) { 
-                                                            var courseID = course.name.replaceAll(" ", "_"); %>
+                                                            var courseID = course.name.replaceAll(" ", "_");
+                                                            var checked = "";
+                                                            if(student.courses.some(elem => elem.name === course.name)) {
+                                                                checked = "checked";
+                                                            }
+                                                            %>
 
                                                             <label class="list-group-item d-flex gap-2">
-                                                              <input class="form-check-input flex-shrink-0 course_checkbox" type="checkbox" id="<%= course.name %>">
+                                                              <input class="form-check-input flex-shrink-0 course_checkbox" type="checkbox" <%= checked %> id="<%= course.name %>">
                                                               <span>
                                                                 <%= course.name %>
                                                                 <small class="d-block text-muted"> <%= course.semesters %> semester(s)</small>
