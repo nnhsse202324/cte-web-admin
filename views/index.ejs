@@ -1,47 +1,64 @@
-
 <!-- include header -->
-    <%- include('include/_header') %>
-<!-- /include header -->
+<%- include('include/_header') %>
+    <!-- /include header -->
 
 
     <!-- Main Site -->
-    <main id="site-main">
-        <div class="container">
 
-            <% for(var department of certificates.departments) { %>
-                <div class="department">
-                    <%= department.name %>
-                
-            
-                <% for(var certificate of department.certificates) { %>
-                    <div class="certificate">
-                        <%= certificate.name %>
-            
-                    <% for(var course of certificate.courses) { %>
-                        <div class="course">
-                            <input type="checkbox" class="course_checkbox" id="<%= course.name %>">
-                            <label for="<%= course.name %>"><%= course.name %></label>
+
+
+    <main class="container">
+        <div class="bg-light p-5 rounded">
+            <h1>Course Selection</h1>
+            <p class="lead">Select the CTE courses which you have completed or are currently taking.</p>
+
+            <div class="accordion" id="departments">
+
+                <% for(var department of certificates.departments) { 
+                    var departmentID = department.name.replaceAll(" ", "_");
+                    var departmentHeading = "heading_" + departmentID %>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="<%= departmentHeading %>">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#<%= departmentID %>" aria-expanded="true" aria-controls="<%= departmentID %>">
+                                <%= department.name %>
+                            </button>
+                        </h2>
+                        <div id="<%= departmentID %>" class="accordion-collapse collapse show" aria-labelledby="<%= departmentHeading %>"
+                            data-bs-parent="#departments">
+                            <div class="accordion-body">
+                                <% for(var certificate of department.certificates) { %>
+                                    <div class="certificate">
+                                        <%= certificate.name %>
+
+                                            <% for(var course of certificate.courses) { %>
+                                                <div class="course">
+                                                    <input type="checkbox" class="course_checkbox"
+                                                        id="<%= course.name %>">
+                                                    <label for="<%= course.name %>">
+                                                        <%= course.name %>
+                                                    </label>
+                                                </div>
+
+                                                <% } %>
+
+                                    </div>
+                                    <% } %>
+                            </div>
                         </div>
-                        
-                    <% } %>
-                    
                     </div>
-                <% } %>
-            
-                </div>
-            <% } %>
-            
+                    <% } %>
+            </div>
+
             <div class="submit_button">
                 <a class="btn btn-lg btn-primary" onclick="submit()" role="button">Submit Courses</a>
             </div>
 
-            
-
         </div>
     </main>
-<!-- /Main Site -->
+    <!-- /Main Site -->
 
 
-<!-- include footer -->
-<%- include('include/_footer') %>
-<!-- /include footer -->
+    <!-- include footer -->
+    <%- include('include/_footer') %>
+        <!-- /include footer -->
