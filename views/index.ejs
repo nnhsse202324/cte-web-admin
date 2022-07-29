@@ -7,27 +7,34 @@
     <!-- Main Site -->
     <main id="site-main">
         <div class="container">
-            <div class="box-nav d-flex justify-between">
-                <a href="/add-user" class="border-shadow">
-                    <span class="text-gradient">New User <i class="fas fa-user"></i></span>
-                </a>
+
+            <% for(var department of certificates.departments) { %>
+                <div class="department">
+                    <%= department.name %>
+                
+            
+                <% for(var certificate of department.certificates) { %>
+                    <div class="certificate">
+                        <%= certificate.name %>
+            
+                    <% for(var course of certificate.courses) { %>
+                        <div class="course">
+                            <input type="checkbox" class="course_checkbox" id="<%= course.name %>">
+                            <label for="<%= course.name %>"><%= course.name %></label>
+                        </div>
+                        
+                    <% } %>
+                    
+                    </div>
+                <% } %>
+            
+                </div>
+            <% } %>
+            
+            <div class="submit_button">
+                <input type="button" value="Submit" onclick="submit()">
             </div>
 
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>@Email</th>
-                        <th>Gender</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%- include('include/_show') %>
-                </tbody>
-            </table>
         </div>
     </main>
 <!-- /Main Site -->
