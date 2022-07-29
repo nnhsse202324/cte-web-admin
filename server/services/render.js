@@ -81,7 +81,7 @@ exports.saveCertificates = async (req, res) => {
     // !!! what is a better way to do this?
     var certificates = [];
     for(var certificate of certificateNames) {
-        certificates.push({name: certificate});
+        certificates.push({name: certificate, year: 2023});
     }
     console.log(certificates);
     req.student.certificates = certificates;
