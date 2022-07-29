@@ -11,7 +11,7 @@ const oAuth2 = new OAuth2Client(CLIENT_ID);
 const cteData = require('../model/cte');
 
 route.get('/', (req, res) => {
-    res.render('index', {student: req.student, cteData: cteData});
+    res.render('courses', {student: req.student, cteData: cteData});
 });
 
 route.post('/courses', async (req, res) => {
@@ -27,7 +27,7 @@ route.post('/courses', async (req, res) => {
     res.status(201).end();
 });
 
-route.get('/certificates', (req, res) => {
+route.get('/certificates', async (req, res) => {
 
     var earnedCertificates = [];
 
@@ -50,9 +50,15 @@ route.get('/certificates', (req, res) => {
 
     // !!! what are the rules for exploratory certificates?
 
-    // !!! handle the case when the student isn't eligible for any certificates
-
-    res.render('certificates', {student: req.student, certificates: earnedCertificates});
+    if(earnedCertificates.length == 0) {
+        req.student.certificates = earnedCertificates;
+        await req.student.save();
+        res.render('confirmation', {student: req.student});
+    }
+    else {
+        res.render('certificates', {student: req.student, certificates: earnedCertificates});
+    }
+    
 });
 
 route.post('/certificates', async (req, res) => {

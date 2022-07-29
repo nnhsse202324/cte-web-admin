@@ -6,26 +6,33 @@
 
     <!-- Main Site -->
 
-    <!-- !!! handle case of no selected certificates -->
-
     <main class="container">
         <div class="bg-light p-5 rounded">
-            <h1>Certificates Confirmation</h1>
-            <p class="lead">You will receive the following CTE Certificates at the CTE Awards Ceremony at the end of the school year. Congratulations!</p>
+            <h1>Certificates Summary</h1>
 
-            <div class="list-group mx-0 w-auto">
-                <% for(var certificate of student.certificates) { %>
+            <% if (student.certificates.length == 0) { %>
 
-                    <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-                       <div class="d-flex gap-2 w-100 justify-content-between">
-                          <div>
-                            <h6 class="mb-0"> <%= certificate.name %> </h6>
-                          </div>
-                        </div>
-                      </a>
+                <p class="lead">Based on the courses that you have selected, you are not eligible for any CTE Certificates yet. We hope you take more CTE classes next year!</p>
 
-                <% } %>
-            </div>
+            <% } else { %>
+            
+                <p class="lead">You will receive the following CTE Certificates at the CTE Awards Ceremony at the end of the school year. Congratulations!</p>
+
+                <div class="list-group mx-0 w-auto">
+                    <% for(var certificate of student.certificates) { %>
+
+                        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                        <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-0"> <%= certificate.name %> </h6>
+                            </div>
+                            </div>
+                        </a>
+
+                    <% } %>
+                </div>
+
+            <% } %>
 
         </div>
     </main>
