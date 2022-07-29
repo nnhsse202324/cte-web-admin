@@ -20,6 +20,7 @@ app.use(morgan('tiny'));
 connectDB();
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.use(session({
     secret: "oBz.N!FizP!DVhf7fRTgNnNcjNmzpgbKD",

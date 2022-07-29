@@ -4,7 +4,7 @@ const route = express.Router()
 const Student = require('../model/model');
 
 const {OAuth2Client} = require('google-auth-library');
-const CLIENT_ID = "1044226590904-o6i6sqk9j4lql9linthugs8bjt52cltl.apps.googleusercontent.com"
+const CLIENT_ID = "1044226590904-dr724v2jnva5f0md76ibpphehcogrofp.apps.googleusercontent.com"
 const oAuth2 = new OAuth2Client(CLIENT_ID);
 
 // load certificate data
@@ -79,7 +79,8 @@ route.get('/login', (req, res) => {
 
 route.post('/auth/v1/google', async (req, res) => {
 
-    let token = req.body.token; // Gets token from request body
+    console.log(req.body);
+    var token = req.body.token;
     let ticket = await oAuth2.verifyIdToken({
         idToken: token,
         audience: CLIENT_ID
