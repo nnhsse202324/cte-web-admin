@@ -48,9 +48,28 @@ exports.courses = async (req, res) => {
 
 exports.certificates = (req, res) => {
 
-    var certificates = [ {name: "Entrepreneurship"}, {name: "Computer Science"}];
+    var earnedCertificates = [];
 
-    res.render('certificates', {users: [], certificates: certificates});
+    console.log(req.student.courses);
+
+    for(var department of certificates.departments) {
+        for(var certificate of department.certificates) {
+            var semesterCount = 0;
+            for(var course of certificate.courses) {
+                if(req.student.courses.some(elem => elem.name === course.name)) {
+                    semesterCount += course.semesters;
+                }
+            }
+
+            if(semesterCount >= certificate.semesters) {
+                earnedCertificates.push(certificate);
+            }
+        }
+    }
+
+    // !!! what are the rules for exploratory certificates?
+
+    res.render('certificates', {users: [], certificates: earnedCertificates});
 }
 
 exports.saveCertificates = async (req, res) => {
