@@ -1,5 +1,5 @@
 <!-- include header -->
-<%- include('include/_header') %>
+<%- include('include/_header', {page: "courses"}) %>
     <!-- /include header -->
 
     <!-- Main Site -->
@@ -10,7 +10,7 @@
 
             <div class="accordion" id="departments">
 
-                <% for(var department of certificates.departments) {
+                <% for(var department of cteData.departments) {
                     var departmentID=department.name.replaceAll(" ", "_");
                     var departmentHeading="heading_" + departmentID %>
                     <div class="accordion-item">

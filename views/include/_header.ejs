@@ -23,18 +23,46 @@
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <% 
+                coursesCurrent = "";
+                certificatesCurrent = "";
+                confirmationCurrent = "";
+                if( page == "courses") {
+                    coursesCurrent = "active";
+                }
+                else if( page == "certificates") {
+                    certificatesCurrent = "active";
+                }
+                else if( page == "confirmation") {
+                    confirmationCurrent = "active";
+                }
+            %>
+
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Courses</a>
+                        <a class="nav-link <%= coursesCurrent %> " href="/">Courses</a>
                     </li>
                     <li class="nav-item">
-                        <!-- !!! enable if courses have been specified -->
-                        <a class="nav-link disabled" href="/certificates">Certificates</a>
+                        <% if (typeof student !== 'undefined' && student.courses.length != 0) { %>
+                            <a class="nav-link <%= certificatesCurrent %>" href="/certificates">Certificates</a>
+                        <% } else { %>  
+                            <a class="nav-link <%= certificatesCurrent %> disabled" href="/certificates">Certificates</a>
+                        <% } %>
                     </li>
+                    <li class="nav-item">
+                        <% if (typeof student !== 'undefined' && student.certificates.length != 0) { %>
+                            <a class="nav-link <%= confirmationCurrent %>" href="/confirmation">Summary</a>
+                        <% } else { %>  
+                            <a class="nav-link <%= confirmationCurrent %> disabled" href="/confirmation">Summary</a>
+                        <% } %>
+                    </li>
+                    <% if (typeof student !== 'undefined') { %>
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
+                    <% } %>
                 </ul>
             </div>
         </div>

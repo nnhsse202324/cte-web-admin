@@ -8,10 +8,10 @@ const CLIENT_ID = "1044226590904-dr724v2jnva5f0md76ibpphehcogrofp.apps.googleuse
 const oAuth2 = new OAuth2Client(CLIENT_ID);
 
 // load certificate data
-const certificates = require('../model/courses');
+const cteData = require('../model/cte');
 
 route.get('/', (req, res) => {
-    res.render('index', {certificates: certificates});
+    res.render('index', {student: req.student, cteData: cteData});
 });
 
 route.post('/courses', async (req, res) => {
@@ -33,7 +33,7 @@ route.get('/certificates', (req, res) => {
 
     console.log(req.student.courses);
 
-    for(var department of certificates.departments) {
+    for(var department of cteData.departments) {
         for(var certificate of department.certificates) {
             var semesterCount = 0;
             for(var course of certificate.courses) {
@@ -50,7 +50,9 @@ route.get('/certificates', (req, res) => {
 
     // !!! what are the rules for exploratory certificates?
 
-    res.render('certificates', {certificates: earnedCertificates});
+    // !!! handle the case when the student isn't eligible for any certificates
+
+    res.render('certificates', {student: req.student, certificates: earnedCertificates});
 });
 
 route.post('/certificates', async (req, res) => {
@@ -69,7 +71,7 @@ route.post('/certificates', async (req, res) => {
 
 route.get('/confirmation', (req, res) => {
 
-    res.render('confirmation', {certificates: req.student.certificates});
+    res.render('confirmation', {student: req.student});
 });
 
 route.get('/login', (req, res) => {
@@ -92,6 +94,11 @@ route.post('/auth/v1/google', async (req, res) => {
     console.log(student);
     req.session.student_sub = student.sub;
     res.status(201).end();
+});
+
+route.get('/logout', (req, res) => {
+    delete req.session.student_sub;
+    res.redirect('login');
 });
 
 async function getOrMakeStudent(sub, email, given_name, family_name) {
