@@ -1,3 +1,5 @@
+// !!! split into 2 files - courses.js and cerrtficates.js
+
 async function submit(){
     var courses = Array.from(document.querySelectorAll(".course_checkbox"));
     var courseNames = [];

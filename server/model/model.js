@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+// !!! rename to student.js
+
 var schema = new mongoose.Schema({
     sub : {
         type: String,

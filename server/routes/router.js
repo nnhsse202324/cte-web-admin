@@ -11,6 +11,11 @@ const oAuth2 = new OAuth2Client(CLIENT_ID);
 const cteData = require('../model/cte');
 
 route.get('/', (req, res) => {
+    res.redirect('courses');
+});
+
+
+route.get('/courses', (req, res) => {
     res.render('courses', {student: req.student, cteData: cteData});
 });
 
