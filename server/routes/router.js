@@ -53,7 +53,24 @@ route.get('/certificates', async (req, res) => {
         }
     }
 
-    // !!! what are the rules for exploratory certificates?
+    // if a student hasn't earned any certificates but has 4 or more semseters of courses,
+    //  they qualify for the exploratory certificate
+    if(earnedCertificates.length == 0) {
+        var semesterCount = 0;
+        for(var department of cteData.departments) {
+            for(var certificate of department.certificates) {
+                for(var course of certificate.courses) {
+                    if(req.student.courses.some(elem => elem.name === course.name)) {
+                        semesterCount += course.semesters;
+                    }
+                }
+            }
+        }
+
+        if(semesterCount >= 4) {
+            earnedCertificates.push({name: "Exploratory"});
+        }
+    }
 
     if(earnedCertificates.length == 0) {
         req.student.certificates = earnedCertificates;
