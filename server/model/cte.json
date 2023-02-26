@@ -276,7 +276,7 @@
                 },
                 {
                     "name": "Transportation",
-                    "semesters": 3,
+                    "semesters": 4,
                     "courses": [
                         {
                             "name": "Auto Maintenance",
