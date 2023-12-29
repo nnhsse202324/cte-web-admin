@@ -13,14 +13,22 @@
   ],
   "author": "gcschmit",
   "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.0",
+    "eslint-plugin-promise": "^6.1.1"
+  },
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "google-auth-library": "^8.1.1",
-    "mongoose": "^5.10.11",
+    "google-auth-library": "^9.4.1",
+    "mongoose": "^7.4.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^3.0.2"
   }
 }
