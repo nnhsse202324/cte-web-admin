@@ -52,6 +52,11 @@ route.get("/certificates", async (req, res) => {
     }
   }
 
+  // Filter out certificates already claimed
+  earnedCertificates = earnedCertificates.filter(
+    (certificate) => !req.student.certificateclaimed.includes(certificate.name)
+  );
+
   // if a student hasn't earned any certificates but has 4 or more semseters of courses,
   //  they qualify for the exploratory certificate
   if (earnedCertificates.length == 0) {
@@ -92,6 +97,23 @@ route.post("/certificates", async (req, res) => {
     name: certificate,
     year: 2023,
   }));
+
+  // Check if the certificates are not already claimed
+  for (var i = 0; i < certificates.length; i++) {
+    if (req.student.certificateclaimed.includes(certificates[i].name)) {
+      // Certificate already claimed, handle accordingly (e.g., return an error)
+      return res.status(400).json({ error: "Certificate already claimed" });
+    }
+  }
+
+  // Add the certificates to the claimed list
+  req.student.certificateclaimed = req.student.certificateclaimed.concat(
+    certificates.map((cert) => cert.name)
+  );
+
+  // Add the certificates to the student's certificates
+  req.student.certificates = req.student.certificates.concat(certificates);
+
   console.log(certificates);
   req.student.certificates = certificates;
   await req.student.save();
@@ -129,9 +151,9 @@ route.get("/logout", (req, res) => {
 });
 
 async function getOrMakeStudent(sub, email, given_name, family_name) {
-  var student = await Student.findOne({ sub: sub }); //see if a user exists with their google account
+  var student = await Student.findOne({ sub: sub }); // see if a user exists with their google account
   if (!student) {
-    //we are certain the user doesn't exist yet, let's make them from scratch
+    // we are certain the user doesn't exist yet, let's make them from scratch
     student = new Student({
       sub: sub,
       email: email,
@@ -139,11 +161,12 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
       family_name: family_name,
       courses: [],
       certificates: [],
+      certificateclaimed: [],
     });
     await student.save(); // insert the user into the collection
   }
 
-  return student; //return the user (either newly made or updated)
+  return student; // return the user (either newly made or updated)
 }
 
 module.exports = route;
