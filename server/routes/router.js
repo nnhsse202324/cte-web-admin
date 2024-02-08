@@ -10,6 +10,8 @@ const oAuth2 = new OAuth2Client(CLIENT_ID);
 
 // load certificate data
 const cteData = require("../model/cte");
+const students = Student.find();
+const temp = "";
 
 route.get("/", (req, res) => {
   res.redirect("courses");
@@ -51,6 +53,24 @@ route.get("/certificates", async (req, res) => {
       }
     }
   }
+
+  route.get("/exportdata", async (req, res) => {
+    var earnedCertificates = [];
+
+    // for (var department of cteData.departments) {
+    //   for (var certificate of department.certificates) {
+    //     var semesterCount = 0;
+    //     for (var course of certificate.courses) {
+    //       if (req.student.courses.some((elem) => elem.name === course.name)) {
+    //         semesterCount += course.semesters;
+    //       }
+    //     }
+
+    //     if (semesterCount >= certificate.semesters) {
+    //       earnedCertificates.push(certificate);
+    //     }
+    //   }
+    // }
 
   // if a student hasn't earned any certificates but has 4 or more semseters of courses,
   //  they qualify for the exploratory certificate
