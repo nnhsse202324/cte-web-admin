@@ -52,6 +52,36 @@ route.get("/certificates", async (req, res) => {
       }
     }
   }
+
+  // if a student hasn't earned any certificates but has 4 or more semseters of courses,
+  //  they qualify for the exploratory certificate
+  if (earnedCertificates.length == 0) {
+    var semesterCount = 0;
+    for (var department of cteData.departments) {
+      for (var certificate of department.certificates) {
+        for (var course of certificate.courses) {
+          if (req.student.courses.some((elem) => elem.name === course.name)) {
+            semesterCount += course.semesters;
+          }
+        }
+      }
+    }
+
+    if (semesterCount >= 4) {
+      earnedCertificates.push({ name: "Exploratory" });
+    }
+  }
+
+  if (earnedCertificates.length == 0) {
+    req.student.certificates = earnedCertificates;
+    await req.student.save();
+    res.render("confirmation", { student: req.student });
+  } else {
+    res.render("certificates", {
+      student: req.student,
+      certificates: earnedCertificates,
+    });
+  }
 });
 
 route.post("/certificates", async (req, res) => {
