@@ -10,7 +10,6 @@ const oAuth2 = new OAuth2Client(CLIENT_ID);
 
 // load certificate data
 const cteData = require("../model/cte");
-const students = Student.find();
 const temp = "";
 
 route.get("/", (req, res) => {
@@ -52,54 +51,6 @@ route.get("/certificates", async (req, res) => {
         earnedCertificates.push(certificate);
       }
     }
-  }
-
-  route.get("/exportdata", async (req, res) => {
-    var earnedCertificates = [];
-
-    // for (var department of cteData.departments) {
-    //   for (var certificate of department.certificates) {
-    //     var semesterCount = 0;
-    //     for (var course of certificate.courses) {
-    //       if (req.student.courses.some((elem) => elem.name === course.name)) {
-    //         semesterCount += course.semesters;
-    //       }
-    //     }
-
-    //     if (semesterCount >= certificate.semesters) {
-    //       earnedCertificates.push(certificate);
-    //     }
-    //   }
-    // }
-
-  // if a student hasn't earned any certificates but has 4 or more semseters of courses,
-  //  they qualify for the exploratory certificate
-  if (earnedCertificates.length == 0) {
-    var semesterCount = 0;
-    for (var department of cteData.departments) {
-      for (var certificate of department.certificates) {
-        for (var course of certificate.courses) {
-          if (req.student.courses.some((elem) => elem.name === course.name)) {
-            semesterCount += course.semesters;
-          }
-        }
-      }
-    }
-
-    if (semesterCount >= 4) {
-      earnedCertificates.push({ name: "Exploratory" });
-    }
-  }
-
-  if (earnedCertificates.length == 0) {
-    req.student.certificates = earnedCertificates;
-    await req.student.save();
-    res.render("confirmation", { student: req.student });
-  } else {
-    res.render("certificates", {
-      student: req.student,
-      certificates: earnedCertificates,
-    });
   }
 });
 
@@ -165,5 +116,53 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
 
   return student; //return the user (either newly made or updated)
 }
+
+// async function printAllStudentData() {
+//   try {
+//     // Fetch all student data from the database
+//     const allStudents = await Student.find();
+
+//     console.log("All Students Data:");
+//     allStudents.forEach((student, index) => {
+//       console.log("Sub:", student.sub);
+//       console.log("Email:", student.email);
+//       console.log("First Name:", student.given_name);
+//       console.log("Last Name:", student.family_name);
+//       console.log("Courses:", student.courses);
+//       console.log("Certificates:", student.certificates);
+//       console.log("-----------------------------");
+//     });
+//   }
+// }
+
+//updated version that prints data neater
+async function printStudentData() {
+  try {
+    // Fetch all student data from the database
+    const allStudents = await Student.find();
+
+    console.log("All Students Data:");
+
+    allStudents.forEach((student, index) => {
+      console.log(`Student ${index + 1}:`);
+      console.log("Sub:", student.sub);
+      console.log("Email:", student.email);
+      console.log("First Name:", student.given_name);
+      console.log("Last Name:", student.family_name);
+      console.log("Courses Taken:");
+      student.courses.forEach((course, i) => {
+        console.log(`  ${i + 1}. ${course.name}`);
+      });
+      console.log("Certificates:");
+      student.certificates.forEach((certificate, i) => {
+        console.log(`  ${i + 1}. ${certificate.name} (${certificate.year})`);
+      });
+      console.log("-----------------------------");
+    });
+  } catch (error) {
+    console.error("Error fetching the student data.", error);
+  }
+}
+printStudentData();
 
 module.exports = route;
