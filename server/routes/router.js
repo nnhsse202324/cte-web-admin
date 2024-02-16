@@ -146,4 +146,8 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
   return student; //return the user (either newly made or updated)
 }
 
+route.get("/export", (req, res) => {
+  res.render("export");
+});
+
 module.exports = route;
