@@ -1,11 +1,12 @@
 <!-- include header -->
-<%- include('include/_header') %>
+<%- include('include/_header', {page: "export"}) %>
 <!-- /include header -->
 
-<script src="js/auth2.js"></script>
-
 <!-- Main Site -->
-<main></main>
+<main>
+  <h1>Export Page</h1>
+  <button onclick="downloadEmptyCSV()">Download Empty CSV</button>
+</main>
 
 <!-- /Main Site -->
 
