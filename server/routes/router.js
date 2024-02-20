@@ -10,6 +10,7 @@ const oAuth2 = new OAuth2Client(CLIENT_ID);
 
 // load certificate data
 const cteData = require("../model/cte");
+const temp = "";
 
 route.get("/", (req, res) => {
   res.redirect("courses");
@@ -145,5 +146,53 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
 
   return student; //return the user (either newly made or updated)
 }
+
+// async function printAllStudentData() {
+//   try {
+//     // Fetch all student data from the database
+//     const allStudents = await Student.find();
+
+//     console.log("All Students Data:");
+//     allStudents.forEach((student, index) => {
+//       console.log("Sub:", student.sub);
+//       console.log("Email:", student.email);
+//       console.log("First Name:", student.given_name);
+//       console.log("Last Name:", student.family_name);
+//       console.log("Courses:", student.courses);
+//       console.log("Certificates:", student.certificates);
+//       console.log("-----------------------------");
+//     });
+//   }
+// }
+
+//updated version that prints data neater
+async function printStudentData() {
+  try {
+    // Fetch all student data from the database
+    const allStudents = await Student.find();
+
+    console.log("All Students Data:");
+
+    allStudents.forEach((student, index) => {
+      console.log(`Student ${index + 1}:`);
+      console.log("Sub:", student.sub);
+      console.log("Email:", student.email);
+      console.log("First Name:", student.given_name);
+      console.log("Last Name:", student.family_name);
+      console.log("Courses Taken:");
+      student.courses.forEach((course, i) => {
+        console.log(`  ${i + 1}. ${course.name}`);
+      });
+      console.log("Certificates:");
+      student.certificates.forEach((certificate, i) => {
+        console.log(`  ${i + 1}. ${certificate.name} (${certificate.year})`);
+      });
+      console.log("-----------------------------");
+    });
+  } catch (error) {
+    console.error("Error fetching the student data.", error);
+  }
+}
+printStudentData();
 
 module.exports = route;
