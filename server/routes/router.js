@@ -47,19 +47,14 @@ route.get("/certificates", async (req, res) => {
       }
 
       if (semesterCount >= certificate.semesters) {
-        earnedCertificates.push(certificate);
+        earnedCertificates.push(certificate); // add year to be pushed
       }
     }
   }
 
-  // Filter out certificates already claimed
-  earnedCertificates = earnedCertificates.filter(
-    (certificate) => !req.student.certificateclaimed.includes(certificate.name)
-  );
-
   // if a student hasn't earned any certificates but has 4 or more semseters of courses,
   //  they qualify for the exploratory certificate
-  if (earnedCertificates.length == 0) {
+  if (earnedCertificates.length === 0) {
     var semesterCount = 0;
     for (var department of cteData.departments) {
       for (var certificate of department.certificates) {
@@ -76,7 +71,12 @@ route.get("/certificates", async (req, res) => {
     }
   }
 
-  if (earnedCertificates.length == 0) {
+  // Filter out certificates already claimed
+  // earnedCertificates = earnedCertificates.filter(
+  //   (certificate) => !req.student.certificateclaimed.includes(certificate.name)
+  // );
+
+  if (earnedCertificates.length === 0) {
     req.student.certificates = earnedCertificates;
     await req.student.save();
     res.render("confirmation", { student: req.student });
@@ -89,17 +89,17 @@ route.get("/certificates", async (req, res) => {
 });
 
 route.post("/certificates", async (req, res) => {
-  var certificateNames = req.body;
+  const certificateNames = req.body;
 
   console.log(certificateNames);
 
-  var certificates = certificateNames.map((certificate) => ({
+  const certificates = certificateNames.map((certificate) => ({
     name: certificate,
-    year: 2023,
+    year: new Date().getFullYear(),
   }));
 
   // Check if the certificates are not already claimed
-  for (var i = 0; i < certificates.length; i++) {
+  for (let i = 0; i < certificates.length; i++) {
     if (req.student.certificateclaimed.includes(certificates[i].name)) {
       // Certificate already claimed, handle accordingly (e.g., return an error)
       return res.status(400).json({ error: "Certificate already claimed" });
@@ -111,7 +111,7 @@ route.post("/certificates", async (req, res) => {
     certificates.map((cert) => cert.name)
   );
 
-  // Add the certificates to the student's certificates
+  //  Add the certificates to the student's certificates
   req.student.certificates = req.student.certificates.concat(certificates);
 
   console.log(certificates);
