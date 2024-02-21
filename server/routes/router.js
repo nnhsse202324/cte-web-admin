@@ -98,21 +98,29 @@ route.post("/certificates", async (req, res) => {
     year: new Date().getFullYear(),
   }));
 
-  // Check if the certificates are not already claimed
-  for (let i = 0; i < certificates.length; i++) {
-    if (req.student.certificateclaimed.includes(certificates[i].name)) {
-      // Certificate already claimed, handle accordingly (e.g., return an error)
-      return res.status(400).json({ error: "Certificate already claimed" });
+  // Create a Set to keep track of unique certificate names
+  const uniqueCertificateNames = new Set();
+
+  // Filter out duplicate certificates
+  const uniqueCertificates = certificates.filter((certificate) => {
+    const { name } = certificate;
+    if (!uniqueCertificateNames.has(name)) {
+      uniqueCertificateNames.add(name);
+      return true;
     }
-  }
+    return false;
+  });
 
   // Add the certificates to the claimed list
-  req.student.certificateclaimed = req.student.certificateclaimed.concat(
-    certificates.map((cert) => cert.name)
-  );
+  req.student.certificateclaimed =
+    req.student.certificateclaimed.concat(uniqueCertificates);
 
-  //  Add the certificates to the student's certificates
-  req.student.certificates = req.student.certificates.concat(certificates);
+  // Add the certificates to the student's certificates
+  req.student.certificates =
+    req.student.certificates.concat(uniqueCertificates);
+
+  // Clear the claimed certificate list
+  //req.student.certificateclaimed = [];
 
   console.log(certificates);
   req.student.certificates = certificates;

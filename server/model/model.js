@@ -23,7 +23,7 @@ const schema = new mongoose.Schema({
   },
   courses: [{ name: String }],
   certificates: [{ name: String, year: Number }],
-  certificateclaimed: [String], // Array of strings to store certificates claimed by the student
+  certificateclaimed: [{ name: String, year: Number }], // Array of objects to store claimed certificates with name and year
 });
 
 const Student = mongoose.model("student", schema);
