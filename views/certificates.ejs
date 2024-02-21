@@ -1,37 +1,76 @@
-
 <!-- include header -->
 <%- include('include/_header', {page: "certificates"}) %>
 <!-- /include header -->
 
+<!-- Main Site -->
+<main class="container">
+  <div class="bg-light p-5 rounded">
+    <h1>Certificate Selection</h1>
+    <p class="lead">
+      Below are displayed all CTE certificates that you have earned. Uncheck
+      those which you have received in previous years.
+    </p>
 
-    <!-- Main Site -->
-    <main class="container">
-        <div class="bg-light p-5 rounded">
-            <h1>Certificate Selection</h1>
-            <p class="lead">Below are displayed all CTE certificates that you have earned. Uncheck those which you have received in previous years.</p>
+    <div class="list-group mx-0 w-auto">
+      <% for(var earnedCertificate of earnedCertificates) { %>
 
-            <div class="list-group mx-0 w-auto">
-                <% for(var certificate of certificates) { %>
+      <label class="list-group-item d-flex gap-2">
+        <input
+          class="form-check-input flex-shrink-0 certificate_checkbox"
+          type="checkbox"
+          checked
+          id="<%= earnedCertificate.certificate.name %>"
+        />
+        <span> <%= earnedCertificate.certificate.name %> </span>
+      </label>
 
-                    <label class="list-group-item d-flex gap-2">
-                      <input class="form-check-input flex-shrink-0 certificate_checkbox" type="checkbox" checked id="<%= certificate.name %>">
-                      <span>
-                        <%= certificate.name %>
-                      </span>
-                    </label>
+      <% } %>
+    </div>
 
-                <% } %>
-            </div>
+    <div class="submit_button">
+      <a
+        class="btn btn-lg btn-primary mt-2"
+        onclick="submitCertificates()"
+        role="button"
+        >Submit Certificates</a
+      >
+    </div>
+  </div>
 
-            <div class="submit_button">
-                <a class="btn btn-lg btn-primary mt-2" onclick="submitCertificates()" role="button">Submit Certificates</a>
-            </div>
-
-        </div>
-    </main>
-
-<!-- /Main Site -->
-
+  <div class="bg-light p-5 rounded">
+    <% earnedCertificates.forEach((earnedCertificate, index) => { %>
+    <div class="bg-light p-5 rounded">
+      <h1>Student <%= index + 1 %> Data</h1>
+      <div>
+        <p>Sub: <%= earnedCertificate.student.sub %></p>
+        <p>Email: <%= earnedCertificate.student.email %></p>
+        <p>First Name: <%= earnedCertificate.student.given_name %></p>
+        <p>Last Name: <%= earnedCertificate.student.family_name %></p>
+        <p>Courses Taken:</p>
+        <ul>
+          <% earnedCertificate.student.courses.forEach((course, i) => { %>
+          <li>
+            <%= i + 1 %>. <%= course.name %> (Semesters: <%= course.semesters
+            %>)
+          </li>
+          <% }); %>
+        </ul>
+        <p>Certificates Earned:</p>
+        <ul>
+          <% earnedCertificate.student.certificates.forEach((certificate, i) =>
+          { %>
+          <li>
+            <%= i + 1 %>. <%= certificate.name %> (Year: <%= certificate.year
+            %>)
+          </li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+    <hr />
+    <% }); %>
+  </div>
+</main>
 
 <!-- include footer -->
 <%- include('include/_footer') %>

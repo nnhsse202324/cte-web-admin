@@ -34,56 +34,66 @@ route.post("/courses", async (req, res) => {
 });
 
 route.get("/certificates", async (req, res) => {
-  var earnedCertificates = [];
+  try {
+    const allStudents = await Student.find();
 
-  console.log(req.student.courses);
+    var earnedCertificates = [];
 
-  for (var department of cteData.departments) {
-    for (var certificate of department.certificates) {
-      var semesterCount = 0;
-      for (var course of certificate.courses) {
-        if (req.student.courses.some((elem) => elem.name === course.name)) {
-          semesterCount += course.semesters;
-        }
-      }
+    allStudents.forEach((student) => {
+      for (var department of cteData.departments) {
+        for (var certificate of department.certificates) {
+          var semesterCount = 0;
+          for (var course of certificate.courses) {
+            if (student.courses.some((elem) => elem.name === course.name)) {
+              semesterCount += course.semesters;
+            }
+          }
 
-      if (semesterCount >= certificate.semesters) {
-        earnedCertificates.push(certificate);
-      }
-    }
-  }
-
-  // if a student hasn't earned any certificates but has 4 or more semseters of courses,
-  //  they qualify for the exploratory certificate
-  if (earnedCertificates.length == 0) {
-    var semesterCount = 0;
-    for (var department of cteData.departments) {
-      for (var certificate of department.certificates) {
-        for (var course of certificate.courses) {
-          if (req.student.courses.some((elem) => elem.name === course.name)) {
-            semesterCount += course.semesters;
+          if (semesterCount >= certificate.semesters) {
+            earnedCertificates.push({
+              student: student,
+              certificate: certificate,
+            });
           }
         }
       }
-    }
 
-    if (semesterCount >= 4) {
-      earnedCertificates.push({ name: "Exploratory" });
-    }
-  }
+      // if a student hasn't earned any certificates but has 4 or more semesters of courses,
+      // they qualify for the exploratory certificate
+      if (earnedCertificates.length == 0) {
+        var semesterCount = 0;
+        for (var department of cteData.departments) {
+          for (var certificate of department.certificates) {
+            for (var course of certificate.courses) {
+              if (student.courses.some((elem) => elem.name === course.name)) {
+                semesterCount += course.semesters;
+              }
+            }
+          }
+        }
 
-  if (earnedCertificates.length == 0) {
-    req.student.certificates = earnedCertificates;
-    await req.student.save();
-    res.render("confirmation", { student: req.student });
-  } else {
-    res.render("certificates", {
-      student: req.student,
-      certificates: earnedCertificates,
+        if (semesterCount >= 4) {
+          earnedCertificates.push({
+            student: student,
+            certificate: { name: "Exploratory" },
+          });
+        }
+      }
     });
+
+    if (earnedCertificates.length == 0) {
+      res.render("confirmation", { student: req.student });
+    } else {
+      res.render("certificates", {
+        students: allStudents,
+        earnedCertificates: earnedCertificates,
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching student data:", error);
+    res.status(500).send("Error fetching student data");
   }
 });
-
 route.post("/certificates", async (req, res) => {
   var certificateNames = req.body;
 
