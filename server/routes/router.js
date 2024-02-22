@@ -208,6 +208,30 @@ async function printStudentData() {
     console.error("Error fetching the student data.", error);
   }
 }
-printStudentData();
+
+async function printStudentDataTabDelimited() {
+  try {
+    // Fetch all student data from the database
+    const allStudents = await Student.find();
+
+    allStudents.forEach((student, index) => {
+      let coursesTaken = student.courses
+        .map((course) => course.name)
+        .join(", ");
+      let certificates = student.certificates
+        .map((certificate) => `${certificate.name} (${certificate.year})`)
+        .join(", ");
+
+      console.log(
+        `${student.sub}\t${student.email}\t${student.given_name}\t${student.family_name}\t${coursesTaken}\t${certificates}`
+      );
+    });
+  } catch (error) {
+    console.error("Error fetching the student data.", error);
+  }
+}
+
+printStudentDataTabDelimited();
+//printStudentData();
 
 module.exports = route;
