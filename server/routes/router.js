@@ -147,6 +147,21 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
   return student; //return the user (either newly made or updated)
 }
 
+route.get("/export", (req, res) => {
+  if (req.student.email.toLowerCase() !== "cydai@stu.naperville203.org") {
+    res.render("export");
+  } else {
+    res.redirect("courses");
+  }
+
+  /**
+   *if (req.student.email.toLowerCase() === "cydai@stu.naperville203.org") {
+    res.render("export");
+  } else {
+    res.redirect("login");
+  }
+   */
+});
 // async function printAllStudentData() {
 //   try {
 //     // Fetch all student data from the database
