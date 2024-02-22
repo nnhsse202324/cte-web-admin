@@ -218,6 +218,5 @@ async function printStudentDataTabDelimited() {
 
 printStudentDataTabDelimited();
 //printStudentData();
-printStudentData();
 
 module.exports = route;
