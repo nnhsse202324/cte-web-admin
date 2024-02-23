@@ -146,10 +146,13 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
 
   return student; //return the user (either newly made or updated)
 }
+route.get("/export", async (req, res) => {
+  const data = await getStudentDataTabDelimited();
+  const csvContent = "data:text/csv;charset=utf-8," + data;
 
-route.get("/export", (req, res) => {
+  const encodedUri = encodeURI(csvContent);
   if (req.student.email.toLowerCase() !== "cydai@stu.naperville203.org") {
-    res.render("export", { data: "dawdwad" });
+    res.render("export", { encodedUri });
   } else {
     res.redirect("courses");
   }
@@ -243,12 +246,12 @@ async function getStudentDataTabDelimited() {
     allStudents.forEach((student, index) => {
       let coursesTaken = student.courses
         .map((course) => course.name)
-        .join(", ");
+        .join("; ");
       let certificates = student.certificates
         .map((certificate) => `${certificate.name} (${certificate.year})`)
-        .join(", ");
+        .join("; ");
 
-      formattedData += `${student.sub}\t${student.email}\t${student.given_name}\t${student.family_name}\t${coursesTaken}\t${certificates}\n`;
+      formattedData += `${student.sub},${student.email},${student.given_name},${student.family_name},${coursesTaken},${certificates}\n`;
     });
 
     return formattedData;
