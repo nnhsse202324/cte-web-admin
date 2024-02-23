@@ -149,7 +149,7 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
 
 route.get("/export", (req, res) => {
   if (req.student.email.toLowerCase() !== "cydai@stu.naperville203.org") {
-    res.render("export");
+    res.render("export", { data: "dawdwad" });
   } else {
     res.redirect("courses");
   }
