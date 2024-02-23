@@ -98,32 +98,35 @@ route.post("/certificates", async (req, res) => {
     year: new Date().getFullYear(),
   }));
 
-  // Create a Set to keep track of unique certificate names
-  const uniqueCertificateNames = new Set();
+  // Clear the claimed certificate list
+  // req.student.certificateclaimed = [];
+  // req.student.certificates = [];
 
-  // Filter out duplicate certificates
+  // Filter out duplicate certificate names
   const uniqueCertificates = certificates.filter((certificate) => {
-    const { name } = certificate;
-    if (!uniqueCertificateNames.has(name)) {
-      uniqueCertificateNames.add(name);
-      return true;
-    }
-    return false;
+    return !req.student.certificateclaimed.some((claimedCertificate) => {
+      return claimedCertificate.name === certificate.name;
+    });
   });
 
-  // Add the certificates to the claimed list
+  // Add unique new certificates to certificates claimed
   req.student.certificateclaimed =
     req.student.certificateclaimed.concat(uniqueCertificates);
 
-  // Add the certificates to the student's certificates
-  req.student.certificates =
-    req.student.certificates.concat(uniqueCertificates);
+  // Filter out certificates that are already claimed
+  const unclaimedCertificates = certificates.filter((certificate) => {
+    return !req.student.certificateclaimed.some((claimedCertificate) => {
+      return claimedCertificate.name === certificate.name;
+    });
+  });
 
-  // Clear the claimed certificate list
-  //req.student.certificateclaimed = [];
+  // Add unclaimed certificates to the student's certificates and claimed list+
+  req.student.certificates = req.student.certificates.concat(
+    unclaimedCertificates
+  );
 
-  console.log(certificates);
-  req.student.certificates = certificates;
+  console.log(unclaimedCertificates);
+  console.log(uniqueCertificates);
   await req.student.save();
 
   res.status(201).end();
