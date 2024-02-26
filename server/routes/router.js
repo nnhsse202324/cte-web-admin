@@ -146,10 +146,13 @@ async function getOrMakeStudent(sub, email, given_name, family_name) {
 
   return student; //return the user (either newly made or updated)
 }
+route.get("/export", async (req, res) => {
+  const data = await getStudentDataTabDelimited();
+  const csvContent = "data:text/csv;charset=utf-8," + data;
 
-route.get("/export", (req, res) => {
+  const encodedUri = encodeURI(csvContent);
   if (req.student.email.toLowerCase() !== "cydai@stu.naperville203.org") {
-    res.render("export");
+    res.render("export", { encodedUri });
   } else {
     res.redirect("courses");
   }
@@ -162,6 +165,7 @@ route.get("/export", (req, res) => {
   }
    */
 });
+
 // async function printAllStudentData() {
 //   try {
 //     // Fetch all student data from the database
@@ -181,57 +185,92 @@ route.get("/export", (req, res) => {
 // }
 
 //updated version that prints data neater
-async function printStudentData() {
+// async function printStudentData() {
+//   try {
+//     // Fetch all student data from the database
+//     const allStudents = await Student.find();
+
+//     console.log("All Students Data:");
+
+//     allStudents.forEach((student, index) => {
+//       console.log(`Student ${index + 1}:`);
+//       console.log("Sub:", student.sub);
+//       console.log("Email:", student.email);
+//       console.log("First Name:", student.given_name);
+//       console.log("Last Name:", student.family_name);
+//       console.log("Courses Taken:");
+//       student.courses.forEach((course, i) => {
+//         console.log(`  ${i + 1}. ${course.name}`);
+//       });
+//       console.log("Certificates:");
+//       student.certificates.forEach((certificate, i) => {
+//         console.log(`  ${i + 1}. ${certificate.name} (${certificate.year})`);
+//       });
+//       console.log("-----------------------------");
+//     });
+//   } catch (error) {
+//     console.error("Error fetching the student data.", error);
+//   }
+// }
+
+// updated version that prints student data in tab delimited form
+// async function printStudentDataTabDelimited() {
+//   try {
+//     // Fetch all student data from the database
+//     const allStudents = await Student.find();
+
+//     allStudents.forEach((student, index) => {
+//       let coursesTaken = student.courses
+//         .map((course) => course.name)
+//         .join(", ");
+//       let certificates = student.certificates
+//         .map((certificate) => `${certificate.name} (${certificate.year})`)
+//         .join(", ");
+
+//       console.log(
+//         `${student.sub}\t${student.email}\t${student.given_name}\t${student.family_name}\t${coursesTaken}\t${certificates}`
+//       );
+//     });
+//   } catch (error) {
+//     console.error("Error fetching the student data.", error);
+//   }
+// }
+
+async function getStudentDataTabDelimited() {
   try {
     // Fetch all student data from the database
     const allStudents = await Student.find();
 
-    console.log("All Students Data:");
-
-    allStudents.forEach((student, index) => {
-      console.log(`Student ${index + 1}:`);
-      console.log("Sub:", student.sub);
-      console.log("Email:", student.email);
-      console.log("First Name:", student.given_name);
-      console.log("Last Name:", student.family_name);
-      console.log("Courses Taken:");
-      student.courses.forEach((course, i) => {
-        console.log(`  ${i + 1}. ${course.name}`);
-      });
-      console.log("Certificates:");
-      student.certificates.forEach((certificate, i) => {
-        console.log(`  ${i + 1}. ${certificate.name} (${certificate.year})`);
-      });
-      console.log("-----------------------------");
-    });
-  } catch (error) {
-    console.error("Error fetching the student data.", error);
-  }
-}
-
-async function printStudentDataTabDelimited() {
-  try {
-    // Fetch all student data from the database
-    const allStudents = await Student.find();
+    let formattedData = "";
 
     allStudents.forEach((student, index) => {
       let coursesTaken = student.courses
         .map((course) => course.name)
-        .join(", ");
+        .join("; ");
       let certificates = student.certificates
         .map((certificate) => `${certificate.name} (${certificate.year})`)
-        .join(", ");
+        .join("; ");
 
-      console.log(
-        `${student.sub}\t${student.email}\t${student.given_name}\t${student.family_name}\t${coursesTaken}\t${certificates}`
-      );
+      formattedData += `${student.email},${student.given_name},${student.family_name},${coursesTaken},${certificates}\n`;
     });
+
+    return formattedData;
   } catch (error) {
     console.error("Error fetching the student data.", error);
+    return ""; // Return an empty string in case of an error
   }
 }
 
-printStudentDataTabDelimited();
+// (async () => {
+//   try {
+//     const formattedData = await getStudentDataTabDelimited();
+//     console.log(formattedData);
+//   } catch (error) {
+//     console.error("Error fetching and printing the student data.", error);
+//   }
+// })();
+
+//printStudentDataTabDelimited();
 //printStudentData();
 
 module.exports = route;
