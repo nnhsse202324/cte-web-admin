@@ -251,7 +251,7 @@ async function getStudentDataTabDelimited() {
         .map((certificate) => `${certificate.name} (${certificate.year})`)
         .join("; ");
 
-      formattedData += `${student.sub},${student.email},${student.given_name},${student.family_name},${coursesTaken},${certificates}\n`;
+      formattedData += `${student.email},${student.given_name},${student.family_name},${coursesTaken},${certificates}\n`;
     });
 
     return formattedData;
