@@ -239,10 +239,10 @@ route.get("/export", async (req, res) => {
 
 async function getStudentDataTabDelimited() {
   try {
-    // Fetch all student data from the database
     const allStudents = await Student.find();
 
-    let formattedData = "";
+    let formattedData =
+      "Email,Given Name,Family Name,Courses Taken,Certificates\n";
 
     allStudents.forEach((student, index) => {
       let coursesTaken = student.courses
