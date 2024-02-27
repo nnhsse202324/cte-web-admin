@@ -1,46 +1,79 @@
-
 <!-- include header -->
 <%- include('include/_header', {page: "confirmation"}) %>
 <!-- /include header -->
 
+<!-- Main Site -->
 
-    <!-- Main Site -->
+<main class="container">
+  <div class="bg-light p-5 rounded">
+    <h1>Certificates Summary</h1>
 
-    <main class="container">
-        <div class="bg-light p-5 rounded">
-            <h1>Certificates Summary</h1>
+    <% if (student.certificates.length == 0) { %>
 
-            <% if (student.certificates.length == 0) { %>
+    <p class="lead">
+      Based on the courses that you have selected, you are not eligible for any
+      CTE Certificates this year. We hope you take more CTE classes next year!
+    </p>
 
-                <p class="lead">Based on the courses that you have selected, you are not eligible for any CTE Certificates this year. We hope you take more CTE classes next year!</p>
+    <% } else { %>
 
-            <% } else { %>
-            
-                <p class="lead">You will receive the following CTE Certificates at the CTE Awards Ceremony at the end of the school year. Congratulations!</p>
+    <p class="lead">
+      You will receive the following CTE Certificates at the CTE Awards Ceremony
+      at the end of the school year. Congratulations!
+    </p>
 
-                <div class="list-group mx-0 w-auto">
-                    <% for(var certificate of student.certificates) { %>
+    <div class="list-group mx-0 w-auto">
+      <% for(var certificate of student.certificates) { %>
 
-                        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-                        <div class="d-flex gap-2 w-100 justify-content-between">
-                            <div>
-                                <h6 class="mb-0"> <%= certificate.name %> </h6>
-                            </div>
-                            </div>
-                        </a>
-
-                    <% } %>
-                </div>
-
-            <% } %>
-
+      <a
+        href="#"
+        class="list-group-item list-group-item-action d-flex gap-3 py-3"
+        aria-current="true"
+      >
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <h6 class="mb-0"><%= certificate.name %></h6>
+          </div>
         </div>
-    </main>
+      </a>
 
-    
-<!-- /Main Site -->
+      <% } %>
+    </div>
 
+    <% } %>
+  </div>
+  <!-- Add a section to display progress towards certificates -->
 
-<!-- include footer -->
-<%- include('include/_footer') %>
-<!-- /include footer -->
+  <h1>Your Progress Towards Certificates</h1>
+  <br />
+  <br />
+  <% for (const progress of progressTowardsCertificates) { %>
+    You have <%= progress.semesterCount %> semester(s) towards earning the
+    <strong> <%= progress.certificate %> </strong> certificate. <% if
+    (selectedCoursesByCategory[progress.certificate].length > 0) { %>
+    <br />
+    Selected courses:
+    <ul>
+      <% for (const course of selectedCoursesByCategory[progress.certificate]) {
+      %>
+      <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
+      <% } %>
+    </ul>
+    <% } %> <%= progress.remainingSemesters %> semesters remaining. <% if
+    (progress.coursesNeeded.length > 0) { %>
+    <br />
+    Course(s) needed:
+    <ul>
+      <% for (const course of progress.coursesNeeded) { %>
+      <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
+      <% } %>
+    </ul>
+    <% } %>
+  </li>
+  <% } %>
+  <!-- /Main Site -->
+
+  <!-- include footer -->
+  <%- include('include/_footer') %>
+  <!-- /include footer -->
+</main>
