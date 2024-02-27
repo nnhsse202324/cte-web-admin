@@ -151,19 +151,20 @@ route.get("/export", async (req, res) => {
   const csvContent = "data:text/csv;charset=utf-8," + data;
 
   const encodedUri = encodeURI(csvContent);
-  if (req.student.email.toLowerCase() !== "cydai@stu.naperville203.org") {
+  const emailLowerCase = req.student.email.toLowerCase();
+
+  // Check if the email ends with "@naperville203.org" or matches specific emails
+  if (
+    emailLowerCase.endsWith("@naperville203.org") ||
+    emailLowerCase === "cydai@stu.naperville203.org" ||
+    emailLowerCase === "cryin@stu.naperville203.org" ||
+    emailLowerCase === "ybu@stu.naperville203.org"
+    // || emailLowerCase === "jyding@stu.naperville2WW03.org"
+  ) {
     res.render("export", { encodedUri });
   } else {
     res.redirect("courses");
   }
-
-  /**
-   *if (req.student.email.toLowerCase() === "cydai@stu.naperville203.org") {
-    res.render("export");
-  } else {
-    res.redirect("login");
-  }
-   */
 });
 
 // async function printAllStudentData() {
@@ -238,10 +239,10 @@ route.get("/export", async (req, res) => {
 
 async function getStudentDataTabDelimited() {
   try {
-    // Fetch all student data from the database
     const allStudents = await Student.find();
 
-    let formattedData = "";
+    let formattedData =
+      "Email,Given Name,Family Name,Courses Taken,Certificates\n";
 
     allStudents.forEach((student, index) => {
       let coursesTaken = student.courses
