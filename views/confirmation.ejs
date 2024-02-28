@@ -43,34 +43,38 @@
     <% } %>
   </div>
   <!-- Add a section to display progress towards certificates -->
+  <% for (const progress of progressTowardsCertificates) { %> You have <%=
+  progress.semesterCount %> semester(s) towards earning the
+  <strong> <%= progress.certificate %> </strong> certificate. <% if
+  (selectedCoursesByCategory[progress.certificate].length > 0) { %>
+  <br />
+  <br />
+  You have taken:
+  <ul>
+    <% for (const course of selectedCoursesByCategory[progress.certificate]) {
+    %>
+    <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
+    <% } %>
+  </ul>
+  <% } %> You need <%= progress.remainingSemesters %> semester(s) to earn the
+  <%= progress.certificate %> certificate. <% if (progress.coursesNeeded.length
+  > 0) { %>
+  <br />
+  <br />
+  Courses available to take:
+  <ul>
+    <% for (const course of progress.coursesNeeded) { %>
+    <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
+    <% } %>
+  </ul>
+  <% } %>
+  <br />
+  <br />
+  <% } %>
 
   <h1>Your Progress Towards Certificates</h1>
   <br />
   <br />
-  <% for (const progress of progressTowardsCertificates) { %>
-    You have <%= progress.semesterCount %> semester(s) towards earning the
-    <strong> <%= progress.certificate %> </strong> certificate. <% if
-    (selectedCoursesByCategory[progress.certificate].length > 0) { %>
-    <br />
-    Selected courses:
-    <ul>
-      <% for (const course of selectedCoursesByCategory[progress.certificate]) {
-      %>
-      <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
-      <% } %>
-    </ul>
-    <% } %> <%= progress.remainingSemesters %> semesters remaining. <% if
-    (progress.coursesNeeded.length > 0) { %>
-    <br />
-    Course(s) needed:
-    <ul>
-      <% for (const course of progress.coursesNeeded) { %>
-      <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
-      <% } %>
-    </ul>
-    <% } %>
-  </li>
-  <% } %>
   <!-- /Main Site -->
 
   <!-- include footer -->
