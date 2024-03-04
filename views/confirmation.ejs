@@ -18,7 +18,8 @@
       at the end of the school year. Congratulations!
     </p>
     <div class="list-group mx-0 w-auto">
-      <% for(var certificate of student.certificates) { %>
+      <% for(var certificate of student.certificates) { %> <% if
+      (certificate.year === new Date().getFullYear()) { %>
       <a
         href="#"
         class="list-group-item list-group-item-action d-flex gap-3 py-3"
@@ -32,29 +33,7 @@
           </div>
         </div>
       </a>
-      <% } %>
-    </div>
-    <% } %> <% if (student.certificateclaimed.length > 0) { %>
-    <div class="bg-light p-5 rounded mt-4">
-      <h2><em>Claimed Certificates</em></h2>
-      <div class="list-group mx-0 w-auto">
-        <% for(var claimedCertificate of student.certificateclaimed) { %>
-        <a
-          href="#"
-          class="list-group-item list-group-item-action d-flex gap-3 py-3"
-          aria-current="true"
-        >
-          <div class="d-flex gap-2 w-100 justify-content-between">
-            <div>
-              <h6 class="mb-0">
-                <em><%= claimedCertificate.name %></em> - <%=
-                claimedCertificate.year %>
-              </h6>
-            </div>
-          </div>
-        </a>
-        <% } %>
-      </div>
+      <% } %> <% } %>
     </div>
     <% } %>
   </div>
