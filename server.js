@@ -11,7 +11,7 @@ const app = express();
 const Student = require("./server/model/model");
 
 dotenv.config({ path: ".env" });
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 
 // log requests
 app.use(morgan("tiny"));
@@ -38,7 +38,7 @@ app.use("/css", express.static(path.resolve(__dirname, "assets/css")));
 app.use("/img", express.static(path.resolve(__dirname, "assets/img")));
 app.use("/js", express.static(path.resolve(__dirname, "assets/js")));
 
-// app.use takes a function that is added to the path of a request. When we call next() it goes to the next function in the path
+//app.use takes a function that is added to the path of a request. When we call next() it goes to the next function in the path
 app.use(async (req, res, next) => {
   // if the student is already logged in, fetch the student object from the database
   if (req.session.student_sub) {

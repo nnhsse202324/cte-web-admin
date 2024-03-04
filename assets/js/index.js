@@ -48,4 +48,31 @@ async function submitCertificates() {
   } else {
     console.log("error");
   }
+  const response = await fetch("/certificates", {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(certificateNames), // body data type must match "Content-Type" header
+  });
+  if (response.ok) {
+    window.location = "/confirmation";
+  } else {
+    console.log("error");
+  }
 }
+
+/**
+ * function downloadEmptyCSV() {
+  const csvContent = "data:text/csv;charset=utf-8,\n";
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "empty_file.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+ */

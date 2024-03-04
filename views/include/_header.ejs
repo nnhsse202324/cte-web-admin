@@ -37,6 +37,8 @@
                 else if( page == "confirmation") {
                     confirmationCurrent = "active";
                 }
+
+                
             %>
 
             <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -58,6 +60,13 @@
                             <a class="nav-link <%= confirmationCurrent %> disabled" href="/confirmation">Summary</a>
                         <% } %>
                     </li>
+
+                    <% if (typeof student !== 'undefined') { %>
+                    <li class="nav-item">  
+                        <a class="nav-link" href="/export">Export</a>
+                    </li>
+                    <% } %>
+
                     <% if (typeof student !== 'undefined') { %>
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
