@@ -18,12 +18,9 @@
       You will receive the following CTE Certificates at the CTE Awards Ceremony
       at the end of the school year. Congratulations!
     </p>
-    <% } %>
-
-    <!-- Certificates of 2024 -->
     <div class="list-group mx-0 w-auto">
       <% for(var certificate of student.certificates) { %> <% if
-      (certificate.year === 2024) { %>
+      (certificate.year === new Date().getFullYear()) { %>
       <a
         href="#"
         class="list-group-item list-group-item-action d-flex gap-3 py-3"
@@ -31,19 +28,22 @@
       >
         <div class="d-flex gap-2 w-100 justify-content-between">
           <div>
-            <h6 class="mb-0"><%= certificate.name %></h6>
+            <h6 class="mb-0">
+              <%= certificate.name %> - <%= certificate.year %>
+            </h6>
           </div>
         </div>
       </a>
       <% } %> <% } %>
     </div>
+    <% } %>
 
     <!-- Previous Year Certificates -->
     <h1>Previous Year Certificates</h1>
     <% if (student.certificates.length > 0) { %>
     <div class="list-group mx-0 w-auto">
       <% for(var certificate of student.certificates) { %> <% if
-      (certificate.year !== 2024) { %>
+      (certificate.year !== new Date().getFullYear()) { %>
       <a
         href="#"
         class="list-group-item list-group-item-action d-flex gap-3 py-3"
