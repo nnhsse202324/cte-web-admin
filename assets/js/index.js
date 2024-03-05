@@ -1,4 +1,4 @@
-// !!! split into 2 files - courses.js and cerrtficates.js
+// !!! split into 2 files - courses.js and certficates.js
 
 async function submit() {
   var courses = Array.from(document.querySelectorAll(".course_checkbox"));
@@ -36,6 +36,18 @@ async function submitCertificates() {
     }
   }
 
+  const response = await fetch("/certificates", {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(certificateNames), // body data type must match "Content-Type" header
+  });
+  if (response.ok) {
+    window.location = "/confirmation";
+  } else {
+    console.log("error");
+  }
   const response = await fetch("/certificates", {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     headers: {
