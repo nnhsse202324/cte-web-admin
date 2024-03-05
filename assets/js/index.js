@@ -48,18 +48,6 @@ async function submitCertificates() {
   } else {
     console.log("error");
   }
-  const response = await fetch("/certificates", {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(certificateNames), // body data type must match "Content-Type" header
-  });
-  if (response.ok) {
-    window.location = "/confirmation";
-  } else {
-    console.log("error");
-  }
 }
 
 /**
