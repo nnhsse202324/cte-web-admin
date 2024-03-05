@@ -55,7 +55,7 @@ route.get("/certificates", async (req, res) => {
 
   // if a student hasn't earned any certificates but has 4 or more semseters of courses,
   //  they qualify for the exploratory certificate
-  if (earnedCertificates.length == 0) {
+  if (earnedCertificates.length === 0) {
     var semesterCount = 0;
     for (var department of cteData.departments) {
       for (var certificate of department.certificates) {
@@ -85,16 +85,28 @@ route.get("/certificates", async (req, res) => {
 });
 
 route.post("/certificates", async (req, res) => {
-  var certificateNames = req.body;
+  const certificateNames = req.body;
 
   console.log(certificateNames);
 
-  var certificates = certificateNames.map((certificate) => ({
+  const certificates = certificateNames.map((certificate) => ({
     name: certificate,
-    year: 2023,
+    year: new Date().getFullYear(), // gets latest year
   }));
-  console.log(certificates);
-  req.student.certificates = certificates;
+
+  // makes temp variable to save all certificate names
+  const claimedCertificateNames = req.student.certificates.map((c) => c.name);
+
+  // compares claimed certificate name to certificate you want to claim
+  const uniqueCertificates = certificates.filter((certificate) => {
+    return !claimedCertificateNames.includes(certificate.name);
+  });
+
+  // adds unique certificate list to certificates
+  req.student.certificates =
+    req.student.certificates.concat(uniqueCertificates);
+
+  console.log(uniqueCertificates);
   await req.student.save();
 
   res.status(201).end();
