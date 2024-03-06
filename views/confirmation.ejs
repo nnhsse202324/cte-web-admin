@@ -42,41 +42,59 @@
 
     <% } %>
   </div>
-  <!-- Add a section to display progress towards certificates -->
-  <% for (const progress of progressTowardsCertificates) { %> You have <%=
-  progress.semesterCount %> semester(s) towards earning the
-  <strong> <%= progress.certificate %> </strong> certificate. <% if
-  (selectedCoursesByCategory[progress.certificate].length > 0) { %>
-  <br />
-  <br />
-  You have taken:
-  <ul>
-    <% for (const course of selectedCoursesByCategory[progress.certificate]) {
-    %>
-    <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
-    <% } %>
-  </ul>
-  <% } %> You need <%= progress.remainingSemesters %> semester(s) to earn the
-  <%= progress.certificate %> certificate. <% if (progress.coursesNeeded.length
-  > 0) { %>
-  <br />
-  <br />
-  Courses available to take:
-  <ul>
-    <% for (const course of progress.coursesNeeded) { %>
-    <li><%= course.name %> (<%= course.semesters %> semester(s))</li>
-    <% } %>
-  </ul>
-  <% } %>
-  <br />
-  <br />
-  <% } %>
-
+ 
+<div class="bg-light p-5 rounded mt-5">
   <h1>Your Progress Towards Certificates</h1>
-  <br />
-  <br />
-  <!-- /Main Site -->
 
+  <% progressTowardsCertificates.forEach((progress, index) => { %>
+    <% if (index > 0) { %>
+      <hr>
+    <% } %>
+
+    <div class="list-group mt-3">
+      <div class="list-group-item d-flex gap-3 py-3 lightblue-background">
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <!-- Apply a class to the h6 element for Roboto font -->
+            <h6 class="mb-0 font"><%= progress.certificate %></h6>
+          </div>
+          <div>
+            <span class="badge bg-primary">Semesters: <%= progress.semesterCount %></span>
+            <span class="badge bg-secondary">Remaining: <%= progress.remainingSemesters %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if (selectedCoursesByCategory[progress.certificate].length > 0) { %>
+      <div class="mt-3">
+        <h6>You have taken:</h6>
+        <ul class="list-group">
+          <% selectedCoursesByCategory[progress.certificate].forEach((course) => { %>
+            <li class="list-group-item">
+              <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1 ? 'semester' : 'semesters' %>)
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <% if (progress.coursesNeeded.length > 0) { %>
+      <div class="mt-3">
+        <h6>Courses available to take:</h6>
+        <ul class="list-group">
+          <% progress.coursesNeeded.forEach((course) => { %>
+            <li class="list-group-item">
+              <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1 ? 'semester' : 'semesters' %>)
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+  <% }) %>
+</div>
+</main>
   <!-- include footer -->
   <%- include('include/_footer') %>
   <!-- /include footer -->
