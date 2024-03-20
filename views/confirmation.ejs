@@ -4,6 +4,7 @@
 
 <!-- Main Site -->
 
+
 <main class="container">
   <div class="bg-light p-5 rounded">
     <h1>Certificates Summary</h1>
@@ -25,6 +26,25 @@
     <div class="list-group mx-0 w-auto">
       <% for(var certificate of student.certificates) { %>
 
+
+
+<main class="container">
+  <div class="bg-light p-5 rounded">
+    <h1>Certificates Summary</h1>
+
+    <% if (student.certificates.length == 0) { %>
+    <p class="lead">
+      Based on the courses that you have selected, you are not eligible for any
+      CTE Certificates this year. We hope you take more CTE classes next year!
+    </p>
+    <% } else { %>
+    <p class="lead">
+      You will receive the following CTE Certificates at the CTE Awards Ceremony
+      at the end of the school year. Congratulations!
+    </p>
+    <div class="list-group mx-0 w-auto">
+      <% for(var certificate of student.certificates) { %> <% if
+      (certificate.year === new Date().getFullYear()) { %>
       <a
         href="#"
         class="list-group-item list-group-item-action d-flex gap-3 py-3"
@@ -98,3 +118,45 @@
   <%- include('include/_footer') %>
   <!-- /include footer -->
 </main>
+
+            <h6 class="mb-0">
+              <%= certificate.name %> - <%= certificate.year %>
+            </h6>
+          </div>
+        </div>
+      </a>
+      <% } %> <% } %>
+    </div>
+    <% } %>
+
+    <!-- Previous Year Certificates -->
+    <h1>Previous Year Certificates</h1>
+    <% if (student.certificates.length > 0) { %>
+    <div class="list-group mx-0 w-auto">
+      <% for(var certificate of student.certificates) { %> <% if
+      (certificate.year !== new Date().getFullYear()) { %>
+      <a
+        href="#"
+        class="list-group-item list-group-item-action d-flex gap-3 py-3"
+        aria-current="true"
+      >
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <h6 class="mb-0"><%= certificate.name %></h6>
+          </div>
+          <div>
+            <span class="text-muted"><%= certificate.year %></span>
+          </div>
+        </div>
+      </a>
+      <% } %> <% } %>
+    </div>
+    <% } %>
+  </div>
+</main>
+
+<!-- /Main Site -->
+
+<!-- include footer -->
+<%- include('include/_footer') %>
+<!-- /include footer -->

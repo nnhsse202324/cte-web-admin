@@ -1,4 +1,4 @@
-// !!! split into 2 files - courses.js and cerrtficates.js
+// !!! split into 2 files - courses.js and certficates.js
 
 async function submit() {
   var courses = Array.from(document.querySelectorAll(".course_checkbox"));
@@ -50,7 +50,8 @@ async function submitCertificates() {
   }
 }
 
-function downloadEmptyCSV() {
+/**
+ * function downloadEmptyCSV() {
   const csvContent = "data:text/csv;charset=utf-8,\n";
 
   const encodedUri = encodeURI(csvContent);
@@ -61,3 +62,5 @@ function downloadEmptyCSV() {
   link.click();
   document.body.removeChild(link);
 }
+
+ */

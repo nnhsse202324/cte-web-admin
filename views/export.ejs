@@ -1,16 +1,10 @@
-<!-- include header -->
-<%- include('include/_header', {page: "export"}) %>
-<!-- /include header -->
+<%- include('include/_header', { page: "export" }) %>
 
-<!-- Main Site -->
 <main>
   <h1>Export Page</h1>
-
-  <button onclick="downloadEmptyCSV()">Download Empty CSV</button>
+  <a href="<%= encodedUri %>" download="StudentCertificatesExport.csv"
+    >Download Certificates CSV</a
+  >
 </main>
 
-<!-- /Main Site -->
-
-<!-- include footer -->
 <%- include('include/_footer') %>
-<!-- /include footer -->
