@@ -1,346 +1,346 @@
 {
-    "departments": [
+  "departments": [
+    {
+      "name": "Business",
+      "certificates": [
         {
-            "name": "Business",
-            "certificates": [
-                {
-                    "name": "Entrepreneurship",
-                    "semesters": 4,
-                    "courses": [
-                        {
-                            "name": "Introdution to Business",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Marketing",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Advanced Marketing",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Advertising",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Business INCubatoredu",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Blended Business ACCELeratoredu",
-                            "semesters": 2
-                        }
-                    ]
-                },
-                {
-                    "name": "Computer Science",
-                    "semesters": 4,
-                    "courses": [
-                        {
-                            "name": "Computer Programming 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Computer Programming 2",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "AP Computer Science A",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Software Engineering 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Software Engineering 2",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Game Design",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Web Page Design",
-                            "semesters": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "Information Technology",
-                    "semesters": 4,
-                    "courses": [
-                        {
-                            "name": "Information Technology Systems 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Information Technology Systems 2",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Cybersecurity",
-                            "semesters": 2
-                        }
-                    ]
-                },
-                {
-                    "name": "Business",
-                    "semesters": 4,
-                    "courses": [
-                        {
-                            "name": "Introduction to Business",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Accounting",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Honors College Accounting",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Tech Edge",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Tech Edge +",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Business Law",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "International Business",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Web Page Design",
-                            "semesters": 1
-                        }
-                    ]
-                }
-            ]
+          "name": "Entrepreneurship",
+          "semesters": 4,
+          "courses": [
+            {
+              "name": "Introdution to Business",
+              "semesters": 1
+            },
+            {
+              "name": "Marketing",
+              "semesters": 1
+            },
+            {
+              "name": "Advanced Marketing",
+              "semesters": 1
+            },
+            {
+              "name": "Advertising",
+              "semesters": 1
+            },
+            {
+              "name": "Business INCubatoredu",
+              "semesters": 2
+            },
+            {
+              "name": "Blended Business ACCELeratoredu",
+              "semesters": 2
+            }
+          ]
         },
         {
-            "name": "Family and Consumer Sciences",
-            "certificates": [
-                {
-                    "name": "Culinary Arts",
-                    "semesters": 3,
-                    "courses": [
-                        {
-                            "name": "Culinary Arts and Nutrition 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Culinary Arts and Nutrition 2",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Culinary Arts and Nutrition 3",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Senior Foods",
-                            "semesters": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "Fashion and Design",
-                    "semesters": 3,
-                    "courses": [
-                        {
-                            "name": "Fashion Design",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Fashion Mechandising",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Interior Design",
-                            "semesters": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "Education",
-                    "semesters": 3,
-                    "courses": [
-                        {
-                            "name": "Early Childhood Education 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Early Childhood Education 2",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Intro to Teaching 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Intro to Teaching 2",
-                            "semesters": 2
-                        }
-                    ]
-                },
-                {
-                    "name": "Health and Human Services",
-                    "semesters": 3,
-                    "courses": [
-                        {
-                            "name": "Introduction to Health Occupations",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Health Occupations",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Human Growth and Development",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Adult Living",
-                            "semesters": 1
-                        }
-                    ]
-                }
-            ]
+          "name": "Computer Science",
+          "semesters": 4,
+          "courses": [
+            {
+              "name": "Computer Programming 1",
+              "semesters": 1
+            },
+            {
+              "name": "Computer Programming 2",
+              "semesters": 1
+            },
+            {
+              "name": "AP Computer Science A",
+              "semesters": 2
+            },
+            {
+              "name": "Software Engineering 1",
+              "semesters": 1
+            },
+            {
+              "name": "Software Engineering 2",
+              "semesters": 1
+            },
+            {
+              "name": "Game Design",
+              "semesters": 1
+            },
+            {
+              "name": "Web Page Design",
+              "semesters": 1
+            }
+          ]
         },
         {
-            "name": "Agriscience",
-            "certificates": [
-                {
-                    "name": "Agriscience",
-                    "semesters": 4,
-                    "courses": [
-                        {
-                            "name": "Plant Science",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Aquaculture and Urban Food Production",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Food Science",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Floral and Landscape Design",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Companion Animal Science 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Companion Animal Science 2",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Veterinary Science",
-                            "semesters": 2
-                        }
-                    ]
-                }
-            ]
+          "name": "Information Technology",
+          "semesters": 4,
+          "courses": [
+            {
+              "name": "Information Technology Systems 1",
+              "semesters": 1
+            },
+            {
+              "name": "Information Technology Systems 2",
+              "semesters": 1
+            },
+            {
+              "name": "Cybersecurity",
+              "semesters": 2
+            }
+          ]
         },
         {
-            "name": "Technology and Engineering",
-            "certificates": [
-                {
-                    "name": "Graphics",
-                    "semesters": 3,
-                    "courses": [
-                        {
-                            "name": "Graphics 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Graphics 2",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Graphics 3",
-                            "semesters": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "Transportation",
-                    "semesters": 4,
-                    "courses": [
-                        {
-                            "name": "Auto Maintenance",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Auto Mechanics",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Auto Service",
-                            "semesters": 2
-                        }
-                    ]
-                },
-                {
-                    "name": "Woodworking/Construction",
-                    "semesters": 3,
-                    "courses": [
-                        {
-                            "name": "Workshop Elements",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Workshop Studio",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Geometry and Construction",
-                            "semesters": 2
-                        }
-                    ]
-                },
-                {
-                    "name": "Engineering and Design",
-                    "semesters": 4,
-                    "courses": [
-                        {
-                            "name": "Engineering Design Studio",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Drafting Studio 1",
-                            "semesters": 1
-                        },
-                        {
-                            "name": "Drafiting Studio 2",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Research and Design",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Electronics",
-                            "semesters": 2
-                        },
-                        {
-                            "name": "Interior Design",
-                            "semesters": 1
-                        }
-                    ]
-                }
-            ]
+          "name": "Business",
+          "semesters": 4,
+          "courses": [
+            {
+              "name": "Introduction to Business",
+              "semesters": 1
+            },
+            {
+              "name": "Accounting",
+              "semesters": 2
+            },
+            {
+              "name": "Honors College Accounting",
+              "semesters": 2
+            },
+            {
+              "name": "Tech Edge",
+              "semesters": 1
+            },
+            {
+              "name": "Tech Edge +",
+              "semesters": 1
+            },
+            {
+              "name": "Business Law",
+              "semesters": 1
+            },
+            {
+              "name": "International Business",
+              "semesters": 1
+            },
+            {
+              "name": "Web Page Design",
+              "semesters": 1
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "name": "Family and Consumer Sciences",
+      "certificates": [
+        {
+          "name": "Culinary Arts",
+          "semesters": 3,
+          "courses": [
+            {
+              "name": "Culinary Arts and Nutrition 1",
+              "semesters": 1
+            },
+            {
+              "name": "Culinary Arts and Nutrition 2",
+              "semesters": 1
+            },
+            {
+              "name": "Culinary Arts and Nutrition 3",
+              "semesters": 1
+            },
+            {
+              "name": "Senior Foods",
+              "semesters": 1
+            }
+          ]
+        },
+        {
+          "name": "Fashion and Design",
+          "semesters": 3,
+          "courses": [
+            {
+              "name": "Fashion Design",
+              "semesters": 1
+            },
+            {
+              "name": "Fashion Mechandising",
+              "semesters": 1
+            },
+            {
+              "name": "Interior Design",
+              "semesters": 1
+            }
+          ]
+        },
+        {
+          "name": "Education",
+          "semesters": 3,
+          "courses": [
+            {
+              "name": "Early Childhood Education 1",
+              "semesters": 1
+            },
+            {
+              "name": "Early Childhood Education 2",
+              "semesters": 1
+            },
+            {
+              "name": "Intro to Teaching 1",
+              "semesters": 1
+            },
+            {
+              "name": "Intro to Teaching 2",
+              "semesters": 2
+            }
+          ]
+        },
+        {
+          "name": "Health and Human Services",
+          "semesters": 3,
+          "courses": [
+            {
+              "name": "Introduction to Health Occupations",
+              "semesters": 1
+            },
+            {
+              "name": "Health Occupations",
+              "semesters": 2
+            },
+            {
+              "name": "Human Growth and Development",
+              "semesters": 1
+            },
+            {
+              "name": "Adult Living",
+              "semesters": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Agriscience",
+      "certificates": [
+        {
+          "name": "Agriscience",
+          "semesters": 4,
+          "courses": [
+            {
+              "name": "Plant Science",
+              "semesters": 1
+            },
+            {
+              "name": "Aquaculture and Urban Food Production",
+              "semesters": 1
+            },
+            {
+              "name": "Food Science",
+              "semesters": 1
+            },
+            {
+              "name": "Floral and Landscape Design",
+              "semesters": 1
+            },
+            {
+              "name": "Companion Animal Science 1",
+              "semesters": 1
+            },
+            {
+              "name": "Companion Animal Science 2",
+              "semesters": 1
+            },
+            {
+              "name": "Veterinary Science",
+              "semesters": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technology and Engineering",
+      "certificates": [
+        {
+          "name": "Graphics",
+          "semesters": 3,
+          "courses": [
+            {
+              "name": "Graphics 1",
+              "semesters": 1
+            },
+            {
+              "name": "Graphics 2",
+              "semesters": 1
+            },
+            {
+              "name": "Graphics 3",
+              "semesters": 1
+            }
+          ]
+        },
+        {
+          "name": "Transportation",
+          "semesters": 4,
+          "courses": [
+            {
+              "name": "Auto Maintenance",
+              "semesters": 1
+            },
+            {
+              "name": "Auto Mechanics",
+              "semesters": 1
+            },
+            {
+              "name": "Auto Service",
+              "semesters": 2
+            }
+          ]
+        },
+        {
+          "name": "Woodworking/Construction",
+          "semesters": 3,
+          "courses": [
+            {
+              "name": "Workshop Elements",
+              "semesters": 1
+            },
+            {
+              "name": "Workshop Studio",
+              "semesters": 2
+            },
+            {
+              "name": "Geometry and Construction",
+              "semesters": 2
+            }
+          ]
+        },
+        {
+          "name": "Engineering and Design",
+          "semesters": 4,
+          "courses": [
+            {
+              "name": "Engineering Design Studio",
+              "semesters": 1
+            },
+            {
+              "name": "Drafting Studio 1",
+              "semesters": 1
+            },
+            {
+              "name": "Drafiting Studio 2",
+              "semesters": 2
+            },
+            {
+              "name": "Research and Design",
+              "semesters": 2
+            },
+            {
+              "name": "Electronics",
+              "semesters": 2
+            },
+            {
+              "name": "Interior Design",
+              "semesters": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
