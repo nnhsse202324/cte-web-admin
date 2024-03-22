@@ -2,12 +2,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Barlow&family=PT+Sans&display=swap");
 
-.lightblue-background {
-  background-color: lightblue;
-}
-.font {
-  font-family: "PT Sans", sans-serif;
-}
 body {
   min-height: 75rem;
   padding-top: 4.5rem;
@@ -130,7 +124,6 @@ table {
   background-color: var(--dark);
   border-color: #32383e;
 }
-
 
 .footer-text {
   bottom: 0;
