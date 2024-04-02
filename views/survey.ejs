@@ -1,0 +1,24 @@
+<!-- include header -->
+<%- include('include/_header', {page: "survey"}) %>
+<!-- /include header -->
+
+<!-- Main Site -->
+<main class="form-signin w-100 m-auto text-center">
+  <div class="signin-opts">
+    <h1>Multiple Choice Questions</h1>
+    <div class="question">
+      <p>1.</p>
+      <input type="radio" id="q1a" name="q1" value="Paris" />
+      <label for="q1a">Paris</label><br />
+      <input type="radio" id="q1b" name="q1" value="London" />
+      <label for="q1b">London</label><br />
+    </div>
+
+    <button onclick="submitAnswers()">Submit</button>
+  </div>
+</main>
+<!-- /Main Site -->
+
+<!-- include footer -->
+<%- include('include/_footer') %>
+<!-- /include footer -->
