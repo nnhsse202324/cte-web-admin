@@ -1,17 +1,12 @@
 const express = require("express");
 const route = express.Router();
-
 const Student = require("../model/model");
-
 const { OAuth2Client } = require("google-auth-library");
 const CLIENT_ID =
   "665794489603-l8iltlfg1iqhni2883pp8tllvntc46vm.apps.googleusercontent.com";
 const oAuth2 = new OAuth2Client(CLIENT_ID);
-
-// load certificate data
+// Load certificate data
 const cteData = require("../model/cte");
-
-const temp = "";
 
 route.get("/", (req, res) => {
   res.redirect("courses");
@@ -23,22 +18,17 @@ route.get("/courses", (req, res) => {
 
 route.post("/courses", async (req, res) => {
   var courseNames = req.body;
-
   console.log(courseNames);
-
   var courses = courseNames.map((course) => ({ name: course }));
   console.log(courses);
   req.student.courses = courses;
   await req.student.save();
-
   res.status(201).end();
 });
 
 route.get("/certificates", async (req, res) => {
   var earnedCertificates = [];
-
   console.log(req.student.courses);
-
   for (var department of cteData.departments) {
     for (var certificate of department.certificates) {
       var semesterCount = 0;
@@ -47,15 +37,14 @@ route.get("/certificates", async (req, res) => {
           semesterCount += course.semesters;
         }
       }
-
       if (semesterCount >= certificate.semesters) {
         earnedCertificates.push(certificate);
       }
     }
   }
 
-  // if a student hasn't earned any certificates but has 4 or more semseters of courses,
-  //  they qualify for the exploratory certificate
+  // If a student hasn't earned any certificates but has 4 or more semesters of courses,
+  // they qualify for the exploratory certificate
   if (earnedCertificates.length == 0) {
     var semesterCount = 0;
     for (var department of cteData.departments) {
@@ -67,16 +56,44 @@ route.get("/certificates", async (req, res) => {
         }
       }
     }
-
     if (semesterCount >= 4) {
       earnedCertificates.push({ name: "Exploratory" });
     }
   }
 
   if (earnedCertificates.length == 0) {
-    req.student.certificates = earnedCertificates;
-    await req.student.save();
-    res.render("confirmation", { student: req.student });
+    // Logic to check if the student has progress towards certificates
+    let hasProgress = false;
+    for (const department of cteData.departments) {
+      for (const certificate of department.certificates) {
+        let semesterCount = 0;
+        for (const course of certificate.courses) {
+          if (
+            req.student.courses.some(
+              (elem) =>
+                elem.name === course.name && elem.semesters >= course.semesters
+            )
+          ) {
+            semesterCount += course.semesters;
+          }
+        }
+        if (semesterCount > 0 && semesterCount < certificate.semesters) {
+          hasProgress = true;
+          break;
+        }
+      }
+      if (hasProgress) break;
+    }
+
+    if (hasProgress) {
+      res.render("certificates", {
+        student: req.student,
+        certificates: [],
+      });
+    } else {
+      // If no progress towards certificates, render confirmation with empty progress array
+      res.redirect("/confirmation");
+    }
   } else {
     res.render("certificates", {
       student: req.student,
@@ -87,9 +104,7 @@ route.get("/certificates", async (req, res) => {
 
 route.post("/certificates", async (req, res) => {
   var certificateNames = req.body;
-
   console.log(certificateNames);
-
   var certificates = certificateNames.map((certificate) => ({
     name: certificate,
     year: 2023,
@@ -97,25 +112,21 @@ route.post("/certificates", async (req, res) => {
   console.log(certificates);
   req.student.certificates = certificates;
   await req.student.save();
-
   res.status(201).end();
 });
 
 route.get("/confirmation", async (req, res) => {
   const hardcodedCourses = ["Course A", "Course B", "Course C"];
-
   const selectedCoursesByCategory = {};
 
   for (const department of cteData.departments) {
     for (const certificate of department.certificates) {
       const categoryName = certificate.name;
       const selectedCoursesWithSemesters = [];
-
       for (const course of certificate.courses) {
         const isSelected = req.student.courses.some((selectedCourse) => {
           return selectedCourse.name === course.name;
         });
-
         if (isSelected) {
           selectedCoursesWithSemesters.push({
             name: course.name,
@@ -123,18 +134,16 @@ route.get("/confirmation", async (req, res) => {
           });
         }
       }
-
       selectedCoursesByCategory[categoryName] = selectedCoursesWithSemesters;
     }
   }
 
-  const progressTowardsCertificates = [];
+  let progressTowardsCertificates = []; // Initialize here
 
   for (const department of cteData.departments) {
     for (const certificate of department.certificates) {
       let requiredSemesters = certificate.semesters;
       let semesterCount = 0;
-
       for (const course of certificate.courses) {
         if (
           selectedCoursesByCategory[certificate.name].some(
@@ -169,6 +178,22 @@ route.get("/confirmation", async (req, res) => {
     }
   }
 
+  // Check if progressTowardsCertificates is empty
+  if (progressTowardsCertificates.length === 0) {
+    // Push a default progress object indicating no progress towards certificates
+    progressTowardsCertificates.push({
+      certificate: "No certificates in progress",
+      semesterCount: 0,
+      remainingSemesters: 0,
+      coursesNeeded: [],
+    });
+  }
+
+  // Ensure selectedCoursesByCategory is always defined
+  if (!selectedCoursesByCategory) {
+    selectedCoursesByCategory = {};
+  }
+
   res.render("confirmation", {
     student: req.student,
     hardcodedCourses: hardcodedCourses,
@@ -177,9 +202,6 @@ route.get("/confirmation", async (req, res) => {
   });
 });
 
-route.get("/login", (req, res) => {
-  res.render("login");
-});
 route.get("/login", (req, res) => {
   res.render("login");
 });
@@ -229,34 +251,8 @@ route.get("/export", (req, res) => {
   } else {
     res.redirect("courses");
   }
-
-  /**
-   *if (req.student.email.toLowerCase() === "cydai@stu.naperville203.org") {
-    res.render("export");
-  } else {
-    res.redirect("login");
-  }
-   */
 });
-// async function printAllStudentData() {
-//   try {
-//     // Fetch all student data from the database
-//     const allStudents = await Student.find();
 
-//     console.log("All Students Data:");
-//     allStudents.forEach((student, index) => {
-//       console.log("Sub:", student.sub);
-//       console.log("Email:", student.email);
-//       console.log("First Name:", student.given_name);
-//       console.log("Last Name:", student.family_name);
-//       console.log("Courses:", student.courses);
-//       console.log("Certificates:", student.certificates);
-//       console.log("-----------------------------");
-//     });
-//   }
-// }
-
-//updated version that prints data neater
 async function printStudentData() {
   try {
     // Fetch all student data from the database

@@ -1,3 +1,4 @@
+
 <!-- include header -->
 <%- include('include/_header', {page: "confirmation"}) %>
 <!-- /include header -->
@@ -42,13 +43,13 @@
 
     <% } %>
   </div>
- 
-<div class="bg-light p-5 rounded mt-5">
-  <h1>Your Progress Towards Certificates</h1>
 
-  <% progressTowardsCertificates.forEach((progress, index) => { %>
-    <% if (index > 0) { %>
-      <hr>
+  <div class="bg-light p-5 rounded mt-5">
+    <h1>Your Progress Towards Certificates</h1>
+
+    <% progressTowardsCertificates.forEach((progress, index) => { %> <% if
+    (index > 0) { %>
+    <hr />
     <% } %>
 
     <div class="list-group mt-3">
@@ -58,43 +59,47 @@
             <h6 class="mb-0 font"><%= progress.certificate %></h6>
           </div>
           <div>
-            <span class="badge bg-primary">Semesters: <%= progress.semesterCount %></span>
-            <span class="badge bg-secondary">Remaining: <%= progress.remainingSemesters %></span>
+            <span class="badge bg-primary"
+              >Semesters: <%= progress.semesterCount %></span
+            >
+            <span class="badge bg-secondary"
+              >Remaining: <%= progress.remainingSemesters %></span
+            >
           </div>
         </div>
       </div>
     </div>
 
-    <% if (selectedCoursesByCategory[progress.certificate].length > 0) { %>
-      <div class="mt-3">
-        <h6>You have taken:</h6>
-        <ul class="list-group">
-          <% selectedCoursesByCategory[progress.certificate].forEach((course) => { %>
-            <li class="list-group-item">
-              <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1 ? 'semester' : 'semesters' %>)
-            </li>
-          <% }) %>
-        </ul>
-      </div>
-    <% } %>
-
-    <% if (progress.coursesNeeded.length > 0) { %>
-      <div class="mt-3">
-        <h6>Courses available to take:</h6>
-        <ul class="list-group">
-          <% progress.coursesNeeded.forEach((course) => { %>
-            <li class="list-group-item">
-              <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1 ? 'semester' : 'semesters' %>)
-            </li>
-          <% }) %>
-        </ul>
-      </div>
-    <% } %>
-
-  <% }) %>
-</div>
+    <% if (selectedCoursesByCategory[progress.certificate] &&
+    selectedCoursesByCategory[progress.certificate].length > 0) { %>
+    <div class="mt-3">
+      <h6>You have taken:</h6>
+      <ul class="list-group">
+        <% selectedCoursesByCategory[progress.certificate].forEach((course) => {
+        %>
+        <li class="list-group-item">
+          <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1
+          ? 'semester' : 'semesters' %>)
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %> <% if (progress.coursesNeeded.length > 0) { %>
+    <div class="mt-3">
+      <h6>Courses available to take:</h6>
+      <ul class="list-group">
+        <% progress.coursesNeeded.forEach((course) => { %>
+        <li class="list-group-item">
+          <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1
+          ? 'semester' : 'semesters' %>)
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %> <% }) %>
+  </div>
 </main>
-  <!-- include footer -->
-  <%- include('include/_footer') %>
-  <!-- /include footer -->
-</main>
+
+<!-- include footer -->
+<%- include('include/_footer') %>
+<!-- /include footer -->
