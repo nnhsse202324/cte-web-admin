@@ -7,48 +7,38 @@
   <div class="signin-opts">
     <h1>Multiple Choice Questions</h1>
     <div class="question">
-      <p>1.</p>
-      <input type="radio" id="q1a" name="q1" value="0" />
-      <label for="q1a">Strongly Disagree</label><br />
-      <input type="radio" id="q1b" name="q1" value="0" />
-      <label for="q1b">Disagree</label><br />
-      <input type="radio" id="q1a" name="q1" value="5" />
-      <label for="q1a">Agree</label><br />
-      <input type="radio" id="q1b" name="q1" value="10" />
-      <label for="q1b">Strongly Agree</label><br />
+      <p>Do you like typing?</p>
+      <input type="radio" value="2" data-category="speed" />
+      <label for="a1">Strongly Disagree</label><br />
+      <input type="radio" id="a1" value="2" data-category="Agriscience" />
+      <label for="b1">Disagree</label><br />
+      <input type="radio" id="b1" value="4" data-category="Exploratory" />
+      <label for="c1">Agree</label><br />
+      <input type="radio" id="c1" value="6" data-category="Business" />
+      <label for="d1">Strongly Agree</label><br />
+      <input
+        type="radio"
+        id="d1"
+        value="8"
+        data-category="Technology and Engineering"
+      />
     </div>
     <div class="question">
-      <p>1.</p>
-      <input type="radio" id="q1a" name="q1" value="0" />
-      <label for="q1a">Strongly Disagree</label><br />
-      <input type="radio" id="q1b" name="q1" value="0" />
-      <label for="q1b">Disagree</label><br />
-      <input type="radio" id="q1a" name="q1" value="5" />
-      <label for="q1a">Agree</label><br />
-      <input type="radio" id="q1b" name="q1" value="10" />
-      <label for="q1b">Strongly Agree</label><br />
-    </div>
-    <div class="question">
-      <p>1.</p>
-      <input type="radio" id="q1a" name="q1" value="0" />
-      <label for="q1a">Strongly Disagree</label><br />
-      <input type="radio" id="q1b" name="q1" value="0" />
-      <label for="q1b">Disagree</label><br />
-      <input type="radio" id="q1a" name="q1" value="5" />-
-      <label for="q1a">Agree</label><br />
-      <input type="radio" id="q1b" name="q1" value="10" />
-      <label for="q1b">Strongly Agree</label><br />
-    </div>
-    <div class="question">
-      <p>1.</p>
-      <input type="radio" id="q1a" name="q1" value="0" />
-      <label for="q1a">Strongly Disagree</label><br />
-      <input type="radio" id="q1b" name="q1" value="0" />
-      <label for="q1b">Disagree</label><br />
-      <input type="radio" id="q1a" name="q1" value="5" />
-      <label for="q1a">Agree</label><br />
-      <input type="radio" id="q1b" name="q1" value="10" />
-      <label for="q1b">Strongly Agree</label><br />
+      <p>Do you like typing?</p>
+      <input type="radio" value="2" data-category="speed" />
+      <label for="a2">Strongly Disagree</label><br />
+      <input type="radio" id="a2" value="2" data-category="Agriscience" />
+      <label for="b2">Disagree</label><br />
+      <input type="radio" id="b2" value="4" data-category="Exploratory" />
+      <label for="c2">Agree</label><br />
+      <input type="radio" id="c2" value="6" data-category="Business" />
+      <label for="d2">Strongly Agree</label><br />
+      <input
+        type="radio"
+        id="d2"
+        value="8"
+        data-category="Technology and Engineering"
+      />
     </div>
 
     <button onclick="submitAnswers()">Submit</button>
@@ -59,3 +49,39 @@
 <!-- include footer -->
 <%- include('include/_footer') %>
 <!-- /include footer -->
+
+<script>
+  function submitAnswers() {
+    const categories = {
+      Business: 0,
+      "Family and Consumer Science": 0,
+      "Technology and Engineering": 0,
+      Agriscience: 0,
+      Exploratory: 0,
+    };
+
+    const questions = document.querySelectorAll(".question");
+
+    questions.forEach((question) => {
+      const selectedAnswer = question.querySelector(
+        'input[type="radio"]:checked'
+      );
+      if (selectedAnswer) {
+        const category = selectedAnswer.getAttribute("data-category");
+        categories[category] += parseInt(selectedAnswer.value, 10);
+      }
+    });
+
+    let highestScore = 0;
+    let highestCategory = "";
+    Object.keys(categories).forEach((category) => {
+      if (categories[category] > highestScore) {
+        highestScore = categories[category];
+        highestCategory = category;
+      }
+    });
+
+    let message = `Your highest category is ${highestCategory} with a score of ${highestScore}.`;
+    alert(message);
+  }
+</script>
