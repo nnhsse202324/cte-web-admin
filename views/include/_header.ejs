@@ -43,9 +43,18 @@
 
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <% if (typeof student !== 'undefined') { %>
+                    <li class="nav-item">  
+                        <a class="nav-link" href="/certificateinfo">Certificate Info</a>
+                    </li>
+                    <% } %>
+                    
                     <li class="nav-item">
                         <a class="nav-link <%= coursesCurrent %> " href="/">Courses</a>
                     </li>
+
+                    
+                    
                     <li class="nav-item">
                         <% if (typeof student !== 'undefined' && student.courses.length != 0) { %>
                             <a class="nav-link <%= certificatesCurrent %>" href="/certificates">Certificates</a>
@@ -66,6 +75,8 @@
                         <a class="nav-link" href="/export">Export</a>
                     </li>
                     <% } %>
+
+                    
 
                     <% if (typeof student !== 'undefined') { %>
                     <li class="nav-item">

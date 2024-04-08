@@ -33,6 +33,10 @@ route.post("/courses", async (req, res) => {
   res.status(201).end();
 });
 
+route.get("/certificateinfo", (req, res) => {
+  res.render("certificateinfo");
+});
+
 route.get("/certificates", async (req, res) => {
   var earnedCertificates = [];
 
