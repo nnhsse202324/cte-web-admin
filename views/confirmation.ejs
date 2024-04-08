@@ -1,4 +1,3 @@
-
 <!-- include header -->
 <%- include('include/_header', {page: "confirmation"}) %>
 <!-- /include header -->
@@ -47,8 +46,10 @@
   <div class="bg-light p-5 rounded mt-5">
     <h1>Your Progress Towards Certificates</h1>
 
-    <% progressTowardsCertificates.forEach((progress, index) => { %> <% if
-    (index > 0) { %>
+    <% if (progressTowardsCertificates.length === 0) { %>
+    <p class="lead">No certificates in Progress</p>
+    <% } else { %> <% progressTowardsCertificates.forEach((progress, index) => {
+    %> <% if (index > 0) { %>
     <hr />
     <% } %>
 
@@ -96,7 +97,7 @@
         <% }) %>
       </ul>
     </div>
-    <% } %> <% }) %>
+    <% } %> <% }) %> <% } %>
   </div>
 </main>
 

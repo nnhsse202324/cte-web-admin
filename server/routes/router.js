@@ -28,7 +28,9 @@ route.post("/courses", async (req, res) => {
 
 route.get("/certificates", async (req, res) => {
   var earnedCertificates = [];
+
   console.log(req.student.courses);
+
   for (var department of cteData.departments) {
     for (var certificate of department.certificates) {
       var semesterCount = 0;
@@ -60,6 +62,10 @@ route.get("/certificates", async (req, res) => {
       earnedCertificates.push({ name: "Exploratory" });
     }
   }
+
+  // Update the student's certificates with the newly earned ones
+  req.student.certificates = earnedCertificates;
+  await req.student.save();
 
   if (earnedCertificates.length == 0) {
     // Logic to check if the student has progress towards certificates
@@ -123,10 +129,12 @@ route.get("/confirmation", async (req, res) => {
     for (const certificate of department.certificates) {
       const categoryName = certificate.name;
       const selectedCoursesWithSemesters = [];
+
       for (const course of certificate.courses) {
         const isSelected = req.student.courses.some((selectedCourse) => {
           return selectedCourse.name === course.name;
         });
+
         if (isSelected) {
           selectedCoursesWithSemesters.push({
             name: course.name,
@@ -134,16 +142,18 @@ route.get("/confirmation", async (req, res) => {
           });
         }
       }
+
       selectedCoursesByCategory[categoryName] = selectedCoursesWithSemesters;
     }
   }
 
-  let progressTowardsCertificates = []; // Initialize here
+  const progressTowardsCertificates = [];
 
   for (const department of cteData.departments) {
     for (const certificate of department.certificates) {
       let requiredSemesters = certificate.semesters;
       let semesterCount = 0;
+
       for (const course of certificate.courses) {
         if (
           selectedCoursesByCategory[certificate.name].some(
@@ -176,22 +186,6 @@ route.get("/confirmation", async (req, res) => {
         });
       }
     }
-  }
-
-  // Check if progressTowardsCertificates is empty
-  if (progressTowardsCertificates.length === 0) {
-    // Push a default progress object indicating no progress towards certificates
-    progressTowardsCertificates.push({
-      certificate: "No certificates in progress",
-      semesterCount: 0,
-      remainingSemesters: 0,
-      coursesNeeded: [],
-    });
-  }
-
-  // Ensure selectedCoursesByCategory is always defined
-  if (!selectedCoursesByCategory) {
-    selectedCoursesByCategory = {};
   }
 
   res.render("confirmation", {
