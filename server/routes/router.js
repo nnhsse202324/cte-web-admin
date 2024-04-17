@@ -55,27 +55,39 @@ route.get("/certificates", async (req, res) => {
 
   // if a student hasn't earned any certificates but has 4 or more semseters of courses,
   //  they qualify for the exploratory certificate
-  if (earnedCertificates.length === 0) {
-    var semesterCount = 0;
-    for (var department of cteData.departments) {
-      for (var certificate of department.certificates) {
-        for (var course of certificate.courses) {
-          if (req.student.courses.some((elem) => elem.name === course.name)) {
+  if (earnedCertificates.length == 0) {
+    // Logic to check if the student has progress towards certificates
+    let hasProgress = false;
+    for (const department of cteData.departments) {
+      for (const certificate of department.certificates) {
+        let semesterCount = 0;
+        for (const course of certificate.courses) {
+          if (
+            req.student.courses.some(
+              (elem) =>
+                elem.name === course.name && elem.semesters >= course.semesters
+            )
+          ) {
             semesterCount += course.semesters;
           }
         }
+        if (semesterCount > 0 && semesterCount < certificate.semesters) {
+          hasProgress = true;
+          break;
+        }
       }
+      if (hasProgress) break;
     }
 
-    if (semesterCount >= 4) {
-      earnedCertificates.push({ name: "Exploratory" });
+    if (hasProgress) {
+      res.render("certificates", {
+        student: req.student,
+        certificates: [],
+      });
+    } else {
+      // If no progress towards certificates, render confirmation with empty progress array
+      res.redirect("/confirmation");
     }
-  }
-
-  if (earnedCertificates.length == 0) {
-    req.student.certificates = earnedCertificates;
-    await req.student.save();
-    res.render("confirmation", { student: req.student });
   } else {
     res.render("certificates", {
       student: req.student,
@@ -112,8 +124,79 @@ route.post("/certificates", async (req, res) => {
   res.status(201).end();
 });
 
-route.get("/confirmation", (req, res) => {
-  res.render("confirmation", { student: req.student });
+route.get("/confirmation", async (req, res) => {
+  const hardcodedCourses = ["Course A", "Course B", "Course C"];
+  const selectedCoursesByCategory = {};
+
+  for (const department of cteData.departments) {
+    for (const certificate of department.certificates) {
+      const categoryName = certificate.name;
+      const selectedCoursesWithSemesters = [];
+
+      for (const course of certificate.courses) {
+        const isSelected = req.student.courses.some((selectedCourse) => {
+          return selectedCourse.name === course.name;
+        });
+
+        if (isSelected) {
+          selectedCoursesWithSemesters.push({
+            name: course.name,
+            semesters: course.semesters,
+          });
+        }
+      }
+
+      selectedCoursesByCategory[categoryName] = selectedCoursesWithSemesters;
+    }
+  }
+
+  const progressTowardsCertificates = [];
+
+  for (const department of cteData.departments) {
+    for (const certificate of department.certificates) {
+      let requiredSemesters = certificate.semesters;
+      let semesterCount = 0;
+
+      for (const course of certificate.courses) {
+        if (
+          selectedCoursesByCategory[certificate.name].some(
+            (c) => c.name === course.name
+          )
+        ) {
+          semesterCount += course.semesters;
+        }
+      }
+
+      if (semesterCount > 0 && semesterCount < requiredSemesters) {
+        const remainingSemesters = requiredSemesters - semesterCount;
+        const coursesNeeded = certificate.courses
+          .filter(
+            (course) =>
+              !selectedCoursesByCategory[certificate.name].some(
+                (c) => c.name === course.name
+              )
+          )
+          .map((course) => ({
+            name: course.name,
+            semesters: course.semesters,
+          }));
+
+        progressTowardsCertificates.push({
+          certificate: certificate.name,
+          semesterCount: semesterCount,
+          remainingSemesters: remainingSemesters,
+          coursesNeeded: coursesNeeded,
+        });
+      }
+    }
+  }
+
+  res.render("confirmation", {
+    student: req.student,
+    hardcodedCourses: hardcodedCourses,
+    progressTowardsCertificates: progressTowardsCertificates,
+    selectedCoursesByCategory: selectedCoursesByCategory, // Pass the selected courses grouped by category
+  });
 });
 
 route.get("/login", (req, res) => {
