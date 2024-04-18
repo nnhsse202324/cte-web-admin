@@ -100,8 +100,58 @@ route.get("/certificateinfo", (req, res) => {
   res.render("certificateinfo");
 });
 
-route.get("/confirmation", (req, res) => {
-  res.render("confirmation", { student: req.student });
+route.get("/confirmation", async (req, res) => {
+  const hardcodedCourses = ["Course A", "Course B", "Course C"];
+
+  // Function to calculate progress towards certificates
+  const calculateProgressTowardsCertificates = () => {
+    const progressTowardsCertificates = [];
+
+    for (const department of cteData.departments) {
+      for (const certificate of department.certificates) {
+        let requiredSemesters = certificate.semesters;
+        let semesterCount = 0;
+
+        for (const course of certificate.courses) {
+          if (
+            req.student.courses.some(
+              (selectedCourse) => selectedCourse.name === course.name
+            )
+          ) {
+            semesterCount += course.semesters;
+          }
+        }
+
+        if (semesterCount > 0 && semesterCount < requiredSemesters) {
+          const remainingSemesters = requiredSemesters - semesterCount;
+          const coursesNeeded = certificate.courses.filter(
+            (course) =>
+              !req.student.courses.some(
+                (selectedCourse) => selectedCourse.name === course.name
+              )
+          );
+
+          progressTowardsCertificates.push({
+            certificate: certificate.name,
+            semesterCount: semesterCount,
+            remainingSemesters: remainingSemesters,
+            coursesNeeded: coursesNeeded,
+          });
+        }
+      }
+    }
+
+    return progressTowardsCertificates;
+  };
+
+  // Calculate progress towards certificates
+  const progressTowardsCertificates = calculateProgressTowardsCertificates();
+
+  res.render("confirmation", {
+    student: req.student,
+    hardcodedCourses: hardcodedCourses,
+    progressTowardsCertificates: progressTowardsCertificates,
+  });
 });
 
 route.get("/login", (req, res) => {
