@@ -102,7 +102,29 @@ route.get("/certificateinfo", (req, res) => {
 
 route.get("/confirmation", async (req, res) => {
   const hardcodedCourses = ["Course A", "Course B", "Course C"];
+  const selectedCoursesByCategory = {};
 
+  for (const department of cteData.departments) {
+    for (const certificate of department.certificates) {
+      const categoryName = certificate.name;
+      const selectedCoursesWithSemesters = [];
+
+      for (const course of certificate.courses) {
+        const isSelected = req.student.courses.some((selectedCourse) => {
+          return selectedCourse.name === course.name;
+        });
+
+        if (isSelected) {
+          selectedCoursesWithSemesters.push({
+            name: course.name,
+            semesters: course.semesters,
+          });
+        }
+      }
+
+      selectedCoursesByCategory[categoryName] = selectedCoursesWithSemesters;
+    }
+  }
   // Function to calculate progress towards certificates
   const calculateProgressTowardsCertificates = () => {
     const progressTowardsCertificates = [];
@@ -151,6 +173,7 @@ route.get("/confirmation", async (req, res) => {
     student: req.student,
     hardcodedCourses: hardcodedCourses,
     progressTowardsCertificates: progressTowardsCertificates,
+    selectedCoursesByCategory: selectedCoursesByCategory,
   });
 });
 

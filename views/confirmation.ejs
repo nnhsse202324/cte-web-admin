@@ -3,7 +3,6 @@
 <!-- /include header -->
 
 <!-- Main Site -->
-
 <main class="container">
   <div class="bg-light p-5 rounded">
     <h1>Certificates Summary</h1>
@@ -62,6 +61,7 @@
     </div>
     <% } %>
   </div>
+
   <!-- Your Progress Towards Certificates -->
   <div class="bg-light p-5 rounded mt-5">
     <h1>Your Progress Towards Certificates</h1>
@@ -91,11 +91,13 @@
       </div>
     </div>
 
-    <% if (progress.coursesNeeded.length > 0) { %>
+    <% if (selectedCoursesByCategory[progress.certificate] &&
+    selectedCoursesByCategory[progress.certificate].length > 0) { %>
     <div class="mt-3">
-      <h6>Courses available to take:</h6>
+      <h6>You have taken:</h6>
       <ul class="list-group">
-        <% progress.coursesNeeded.forEach((course) => { %>
+        <% selectedCoursesByCategory[progress.certificate].forEach((course) => {
+        %>
         <li class="list-group-item">
           <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1
           ? 'semester' : 'semesters' %>)
@@ -103,7 +105,23 @@
         <% }) %>
       </ul>
     </div>
-    <% } %> <% }) %> <% } %>
+    <% } %>
+
+    <div class="mt-3">
+      <h6>Courses available to take:</h6>
+      <ul class="list-group">
+        <% progress.coursesNeeded.forEach((course) => { %> <% const taken =
+        student.courses.some(c => c.name === course.name && c.semesters >=
+        course.semesters); %> <% if (!taken) { %>
+        <li class="list-group-item">
+          <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1
+          ? 'semester' : 'semesters' %>)
+        </li>
+        <% } %> <% }) %>
+      </ul>
+    </div>
+
+    <% }) %> <% } %>
   </div>
 </main>
 
