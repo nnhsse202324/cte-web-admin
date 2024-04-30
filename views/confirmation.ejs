@@ -3,7 +3,6 @@
 <!-- /include header -->
 
 <!-- Main Site -->
-
 <main class="container">
   <div class="bg-light p-5 rounded">
     <h1>Certificates Summary</h1>
@@ -61,6 +60,68 @@
       <% } %> <% } %>
     </div>
     <% } %>
+  </div>
+
+  <!-- Your Progress Towards Certificates -->
+  <div class="bg-light p-5 rounded mt-5">
+    <h1>Your Progress Towards Certificates</h1>
+
+    <% if (progressTowardsCertificates.length === 0) { %>
+    <p class="lead">No certificates in Progress</p>
+    <% } else { %> <% progressTowardsCertificates.forEach((progress, index) => {
+    %> <% if (index > 0) { %>
+    <hr />
+    <% } %>
+
+    <div class="list-group mt-3">
+      <div class="list-group-item d-flex gap-3 py-3 lightblue-background">
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <h6 class="mb-0 font"><%= progress.certificate %></h6>
+          </div>
+          <div>
+            <span class="badge bg-primary"
+              >Semesters: <%= progress.semesterCount %></span
+            >
+            <span class="badge bg-secondary"
+              >Remaining: <%= progress.remainingSemesters %></span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if (selectedCoursesByCategory[progress.certificate] &&
+    selectedCoursesByCategory[progress.certificate].length > 0) { %>
+    <div class="mt-3">
+      <h6>You have taken:</h6>
+      <ul class="list-group">
+        <% selectedCoursesByCategory[progress.certificate].forEach((course) => {
+        %>
+        <li class="list-group-item">
+          <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1
+          ? 'semester' : 'semesters' %>)
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %>
+
+    <div class="mt-3">
+      <h6>Courses available to take:</h6>
+      <ul class="list-group">
+        <% progress.coursesNeeded.forEach((course) => { %> <% const taken =
+        student.courses.some(c => c.name === course.name && c.semesters >=
+        course.semesters); %> <% if (!taken) { %>
+        <li class="list-group-item">
+          <%= course.name %> (<%= course.semesters %> <%= course.semesters === 1
+          ? 'semester' : 'semesters' %>)
+        </li>
+        <% } %> <% }) %>
+      </ul>
+    </div>
+
+    <% }) %> <% } %>
   </div>
 </main>
 
