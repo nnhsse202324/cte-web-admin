@@ -231,16 +231,16 @@ route.get("/export", async (req, res) => {
     emailLowerCase.endsWith("@naperville203.org") ||
     emailLowerCase === "cydai@stu.naperville203.org" ||
     emailLowerCase === "cryin@stu.naperville203.org" ||
-    emailLowerCase === "ybu@stu.naperville203.org"
-    // || emailLowerCase === "jyding@stu.naperville2WW03.org"
+    emailLowerCase === "ybu@stu.naperville203.org" ||
+    emailLowerCase === "jyding@stu.naperville203.org"
   ) {
     res.render("export", { encodedUri });
   } else {
     res.redirect("courses");
   }
 });
-
-async function getStudentDataTabDelimited() {
+//data for all students
+/*async function getStudentDataTabDelimited() {
   try {
     const allStudents = await Student.find();
 
@@ -252,10 +252,45 @@ async function getStudentDataTabDelimited() {
         .map((course) => course.name)
         .join("; ");
       const certificates = student.certificates
-        .map((certificate) => `${certificate.name} (${certificate.year})`)
+        // .map((certificate) => `${certificate.name} (${certificate.year})`)
+        //  .join("; ");
+        .filter((certificate) => certificate.year === currentYear)
+        .map((certificate) => certificate.name)
         .join("; ");
 
       formattedData += `${student.email},${student.given_name},${student.family_name},${coursesTaken},${certificates}\n`;
+    });
+
+    return formattedData;
+  } catch (error) {
+    console.error("Error fetching the student data.", error);
+    return ""; // Return an empty string in case of an error
+  }
+}*/
+
+async function getStudentDataTabDelimited() {
+  try {
+    const currentYear = new Date().getFullYear();
+    const allStudents = await Student.find();
+
+    let formattedData =
+      "Email,Given Name,Family Name,Courses Taken,Certificates\n";
+
+    allStudents.forEach((student, index) => {
+      const coursesTaken = student.courses
+        .map((course) => course.name)
+        .join("; ");
+
+      // Filter certificates for the current year only
+      const currentYearCertificates = student.certificates
+        .filter((certificate) => certificate.year === currentYear)
+        .map((certificate) => `${certificate.name} (${certificate.year})`)
+        .join("; ");
+
+      // If the student has certificates for the current year, include them
+      if (currentYearCertificates) {
+        formattedData += `${student.email},${student.given_name},${student.family_name},${coursesTaken},${currentYearCertificates}\n`;
+      }
     });
 
     return formattedData;
