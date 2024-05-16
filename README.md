@@ -27,7 +27,7 @@ This application is browser-based and platform-independent.
 3. Create a `.env` file in the project root and ask Mr. Schmit for the `PORT` number and `MONGO_URI`. Example:
    ```
    PORT=8081
-   MONGO_URI=mongodb+srv://nnhssoftware:V7VpG7976lbE2Hh8@cluster0.k7wkeh2.mongodb.net/students?retryWrites=true&w=majority
+   MONGO_URI=mongodb+srv://nnhssoftware:<password>@cluster0.k7wkeh2.mongodb.net/students?retryWrites=true&w=majority
    ```
 4. Configure `launch.json` to match the `PORT` in your `.env` file.
 
