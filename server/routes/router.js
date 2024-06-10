@@ -307,6 +307,83 @@ async function updateCourseNameAndCertificates() {
         await student.save();
       }
     }
+
+    const earnedCertificates = [];
+
+    for (const department of cteData.departments) {
+      for (const certificate of department.certificates) {
+        let semesterCount = 0;
+        for (const course of certificate.courses) {
+          if (student.courses.some((elem) => elem.name === course.name)) {
+            semesterCount += course.semesters;
+          }
+        }
+
+        if (semesterCount >= certificate.semesters) {
+          earnedCertificates.push(certificate.name);
+        }
+      }
+    }
+
+    // if a student hasn't earned any certificates but has 4 or more semesters of courses,
+    //  they qualify for the exploratory certificate
+    if (earnedCertificates.length === 0) {
+      let semesterCount = 0;
+      for (const department of cteData.departments) {
+        for (const certificate of department.certificates) {
+          for (const course of certificate.courses) {
+            if (student.courses.some((elem) => elem.name === course.name)) {
+              semesterCount += course.semesters;
+            }
+          }
+        }
+      }
+
+      if (semesterCount >= 4) {
+        earnedCertificates.push("Exploratory");
+      }
+    }
+
+    if (earnedCertificates.length === 0) {
+      student.certificates = earnedCertificates;
+    } else {
+      console.log(earnedCertificates);
+
+      const certificates = earnedCertificates.map((certificate) => ({
+        name: certificate,
+        year: new Date().getFullYear(), // gets latest year
+      }));
+
+      // check if the student is no longer eligible for any of the certificates previous stored;
+      //  this could happen if a student selected some classes and then went back and unselected some
+      for (let i = 0; i < student.certificates.length; i++) {
+        if (!earnedCertificates.includes(student.certificates[i].name)) {
+          console.log(
+            "removing certificate: " +
+              student.certificates[i].name +
+              " from student: " +
+              student.email
+          );
+
+          student.certificates.splice(i, 1);
+          i--;
+        }
+      }
+
+      // makes temp variable to save all certificate names
+      const claimedCertificateNames = student.certificates.map((c) => c.name);
+
+      // compares claimed certificate name to certificate you want to claim
+      const uniqueCertificates = certificates.filter((certificate) => {
+        return !claimedCertificateNames.includes(certificate.name);
+      });
+
+      // adds unique certificate list to certificates
+      student.certificates = student.certificates.concat(uniqueCertificates);
+
+      console.log(uniqueCertificates);
+    }
+    await student.save();
   }
 }
 
