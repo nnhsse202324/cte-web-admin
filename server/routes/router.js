@@ -228,13 +228,7 @@ route.get("/export", async (req, res) => {
   const emailLowerCase = req.student.email.toLowerCase();
 
   // Check if the email ends with "@naperville203.org" or matches specific emails
-  if (
-    emailLowerCase.endsWith("@naperville203.org") ||
-    emailLowerCase === "cydai@stu.naperville203.org" ||
-    emailLowerCase === "cryin@stu.naperville203.org" ||
-    emailLowerCase === "ybu@stu.naperville203.org"
-    // || emailLowerCase === "jyding@stu.naperville2WW03.org"
-  ) {
+  if (emailLowerCase.endsWith("@naperville203.org")) {
     res.render("export", { encodedUri });
   } else {
     res.redirect("courses");
@@ -243,6 +237,7 @@ route.get("/export", async (req, res) => {
 
 async function getStudentDataTabDelimited() {
   try {
+    const currentYear = new Date().getFullYear();
     const allStudents = await Student.find();
 
     let formattedData =
@@ -252,11 +247,17 @@ async function getStudentDataTabDelimited() {
       const coursesTaken = student.courses
         .map((course) => course.name)
         .join("; ");
-      const certificates = student.certificates
+
+      // Filter certificates for the current year only
+      const currentYearCertificates = student.certificates
+        .filter((certificate) => certificate.year === currentYear)
         .map((certificate) => `${certificate.name} (${certificate.year})`)
         .join("; ");
 
-      formattedData += `${student.email},${student.given_name},${student.family_name},${coursesTaken},${certificates}\n`;
+      // If the student has certificates for the current year, include them
+      if (currentYearCertificates) {
+        formattedData += `${student.email},${student.given_name},${student.family_name},${coursesTaken},${currentYearCertificates}\n`;
+      }
     });
 
     return formattedData;
