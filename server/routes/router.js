@@ -117,7 +117,6 @@ route.get("/certificateinfo", (req, res) => {
 });
 
 route.get("/confirmation", async (req, res) => {
-  const hardcodedCourses = ["Course A", "Course B", "Course C"];
   const selectedCoursesByCategory = {};
 
   for (const department of cteData.departments) {
@@ -187,7 +186,6 @@ route.get("/confirmation", async (req, res) => {
 
   res.render("confirmation", {
     student: req.student,
-    hardcodedCourses: hardcodedCourses,
     progressTowardsCertificates: progressTowardsCertificates,
     selectedCoursesByCategory: selectedCoursesByCategory,
   });
