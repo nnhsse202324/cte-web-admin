@@ -5,7 +5,7 @@ const Student = require("../model/model");
 
 const { OAuth2Client } = require("google-auth-library");
 const CLIENT_ID =
-  "665794489603-l8iltlfg1iqhni2883pp8tllvntc46vm.apps.googleusercontent.com";
+  "1044226590904-o6i6sqk9j4lql9linthugs8bjt52cltl.apps.googleusercontent.com";
 const oAuth2 = new OAuth2Client(CLIENT_ID);
 
 // load certificate data
