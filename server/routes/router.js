@@ -22,15 +22,10 @@ route.get("/courses", (req, res) => {
 route.post("/courses", async (req, res) => {
   const courseNames = req.body;
 
-  console.log(courseNames);
-
   const courses = courseNames.map((course) => ({ name: course }));
-  console.log(courses);
   req.student.courses = courses;
 
   const earnedCertificates = [];
-
-  console.log(req.student.courses);
 
   for (const department of cteData.departments) {
     for (const certificate of department.certificates) {
@@ -69,8 +64,6 @@ route.post("/courses", async (req, res) => {
   if (earnedCertificates.length === 0) {
     req.student.certificates = earnedCertificates;
   } else {
-    console.log(earnedCertificates);
-
     const certificates = earnedCertificates.map((certificate) => ({
       name: certificate,
       year: new Date().getFullYear(), // gets latest year
@@ -103,8 +96,6 @@ route.post("/courses", async (req, res) => {
     // adds unique certificate list to certificates
     req.student.certificates =
       req.student.certificates.concat(uniqueCertificates);
-
-    console.log(uniqueCertificates);
   }
 
   await req.student.save();
@@ -196,7 +187,6 @@ route.get("/login", (req, res) => {
 });
 
 route.post("/auth/v1/google", async (req, res) => {
-  console.log(req.body);
   const token = req.body.token;
   const ticket = await oAuth2.verifyIdToken({
     idToken: token,
@@ -204,9 +194,7 @@ route.post("/auth/v1/google", async (req, res) => {
   });
 
   const { sub, email, given_name, family_name } = ticket.getPayload();
-  console.log(sub, email, given_name, family_name);
   const student = await getOrMakeStudent(sub, email, given_name, family_name);
-  console.log(student);
   req.session.student_sub = student.sub;
   res.status(201).end();
 });
@@ -345,8 +333,6 @@ async function updateCourseNameAndCertificates() {
     if (earnedCertificates.length === 0) {
       student.certificates = earnedCertificates;
     } else {
-      console.log(earnedCertificates);
-
       const certificates = earnedCertificates.map((certificate) => ({
         name: certificate,
         year: new Date().getFullYear(), // gets latest year
@@ -378,8 +364,6 @@ async function updateCourseNameAndCertificates() {
 
       // adds unique certificate list to certificates
       student.certificates = student.certificates.concat(uniqueCertificates);
-
-      console.log(uniqueCertificates);
     }
     await student.save();
   }
