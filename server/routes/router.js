@@ -22,15 +22,10 @@ route.get("/courses", (req, res) => {
 route.post("/courses", async (req, res) => {
   const courseNames = req.body;
 
-  console.log(courseNames);
-
   const courses = courseNames.map((course) => ({ name: course }));
-  console.log(courses);
   req.student.courses = courses;
 
   const earnedCertificates = [];
-
-  console.log(req.student.courses);
 
   for (const department of cteData.departments) {
     for (const certificate of department.certificates) {
@@ -66,30 +61,41 @@ route.post("/courses", async (req, res) => {
     }
   }
 
-  if (earnedCertificates.length === 0) {
-    req.student.certificates = earnedCertificates;
-  } else {
-    console.log(earnedCertificates);
+  const certificates = earnedCertificates.map((certificate) => ({
+    name: certificate,
+    year: new Date().getFullYear(), // gets latest year
+  }));
 
-    const certificates = earnedCertificates.map((certificate) => ({
-      name: certificate,
-      year: new Date().getFullYear(), // gets latest year
-    }));
+  // check if the student is no longer eligible for any of the certificates previous stored;
+  //  this could happen if a student selected some classes and then went back and unselected some
+  for (let i = 0; i < req.student.certificates.length; i++) {
+    if (
+      !earnedCertificates.includes(req.student.certificates[i].name) &&
+      req.student.certificates[i].year === new Date().getFullYear()
+    ) {
+      console.log(
+        "removing certificate: " +
+          req.student.certificates[i].name +
+          " from student: " +
+          req.student.email
+      );
 
-    // makes temp variable to save all certificate names
-    const claimedCertificateNames = req.student.certificates.map((c) => c.name);
-
-    // compares claimed certificate name to certificate you want to claim
-    const uniqueCertificates = certificates.filter((certificate) => {
-      return !claimedCertificateNames.includes(certificate.name);
-    });
-
-    // adds unique certificate list to certificates
-    req.student.certificates =
-      req.student.certificates.concat(uniqueCertificates);
-
-    console.log(uniqueCertificates);
+      req.student.certificates.splice(i, 1);
+      i--;
+    }
   }
+
+  // makes temp variable to save all certificate names
+  const claimedCertificateNames = req.student.certificates.map((c) => c.name);
+
+  // compares claimed certificate name to certificate you want to claim
+  const uniqueCertificates = certificates.filter((certificate) => {
+    return !claimedCertificateNames.includes(certificate.name);
+  });
+
+  // adds unique certificate list to certificates
+  req.student.certificates =
+    req.student.certificates.concat(uniqueCertificates);
 
   await req.student.save();
 
@@ -101,7 +107,6 @@ route.get("/certificateinfo", (req, res) => {
 });
 
 route.get("/confirmation", async (req, res) => {
-  const hardcodedCourses = ["Course A", "Course B", "Course C"];
   const selectedCoursesByCategory = {};
 
   for (const department of cteData.departments) {
@@ -171,7 +176,6 @@ route.get("/confirmation", async (req, res) => {
 
   res.render("confirmation", {
     student: req.student,
-    hardcodedCourses: hardcodedCourses,
     progressTowardsCertificates: progressTowardsCertificates,
     selectedCoursesByCategory: selectedCoursesByCategory,
   });
@@ -182,7 +186,6 @@ route.get("/login", (req, res) => {
 });
 
 route.post("/auth/v1/google", async (req, res) => {
-  console.log(req.body);
   const token = req.body.token;
   const ticket = await oAuth2.verifyIdToken({
     idToken: token,
@@ -190,9 +193,7 @@ route.post("/auth/v1/google", async (req, res) => {
   });
 
   const { sub, email, given_name, family_name } = ticket.getPayload();
-  console.log(sub, email, given_name, family_name);
   const student = await getOrMakeStudent(sub, email, given_name, family_name);
-  console.log(student);
   req.session.student_sub = student.sub;
   res.status(201).end();
 });
