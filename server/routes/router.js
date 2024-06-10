@@ -241,11 +241,6 @@ route.get("/export", async (req, res) => {
   }
 });
 
-route.get("/fixData", async (req, res) => {
-  await updateCourseNameAndCertificates();
-  res.redirect("courses");
-});
-
 async function getStudentDataTabDelimited() {
   try {
     const allStudents = await Student.find();
@@ -268,106 +263,6 @@ async function getStudentDataTabDelimited() {
   } catch (error) {
     console.error("Error fetching the student data.", error);
     return ""; // Return an empty string in case of an error
-  }
-}
-
-async function updateCourseNameAndCertificates() {
-  const allStudents = await Student.find();
-
-  for (let i = 0; i < allStudents.length; i++) {
-    const student = allStudents[i];
-    for (let j = 0; j < student.courses.length; j++) {
-      if (student.courses[j].name === "Introdution to Business") {
-        let duplicateCourse = false;
-        for (let k = j; k < student.courses.length; k++) {
-          if (student.courses[k].name === "Introduction to Business") {
-            duplicateCourse = true;
-          }
-        }
-        if (duplicateCourse) {
-          student.courses.splice(j, 1);
-        } else {
-          student.courses[j].name = "Introduction to Business";
-        }
-        await student.save();
-      }
-    }
-
-    const earnedCertificates = [];
-
-    for (const department of cteData.departments) {
-      for (const certificate of department.certificates) {
-        let semesterCount = 0;
-        for (const course of certificate.courses) {
-          if (student.courses.some((elem) => elem.name === course.name)) {
-            semesterCount += course.semesters;
-          }
-        }
-
-        if (semesterCount >= certificate.semesters) {
-          earnedCertificates.push(certificate.name);
-        }
-      }
-    }
-
-    // if a student hasn't earned any certificates but has 4 or more semesters of courses,
-    //  they qualify for the exploratory certificate
-    if (earnedCertificates.length === 0) {
-      let semesterCount = 0;
-      for (const department of cteData.departments) {
-        for (const certificate of department.certificates) {
-          for (const course of certificate.courses) {
-            if (student.courses.some((elem) => elem.name === course.name)) {
-              semesterCount += course.semesters;
-            }
-          }
-        }
-      }
-
-      if (semesterCount >= 4) {
-        earnedCertificates.push("Exploratory");
-      }
-    }
-
-    if (earnedCertificates.length === 0) {
-      student.certificates = earnedCertificates;
-    } else {
-      const certificates = earnedCertificates.map((certificate) => ({
-        name: certificate,
-        year: new Date().getFullYear(), // gets latest year
-      }));
-
-      // check if the student is no longer eligible for any of the certificates previous stored;
-      //  this could happen if a student selected some classes and then went back and unselected some
-      for (let i = 0; i < student.certificates.length; i++) {
-        if (
-          !earnedCertificates.includes(student.certificates[i].name) &&
-          student.certificates[i].year === new Date().getFullYear()
-        ) {
-          console.log(
-            "removing certificate: " +
-              student.certificates[i].name +
-              " from student: " +
-              student.email
-          );
-
-          student.certificates.splice(i, 1);
-          i--;
-        }
-      }
-
-      // makes temp variable to save all certificate names
-      const claimedCertificateNames = student.certificates.map((c) => c.name);
-
-      // compares claimed certificate name to certificate you want to claim
-      const uniqueCertificates = certificates.filter((certificate) => {
-        return !claimedCertificateNames.includes(certificate.name);
-      });
-
-      // adds unique certificate list to certificates
-      student.certificates = student.certificates.concat(uniqueCertificates);
-    }
-    await student.save();
   }
 }
 
