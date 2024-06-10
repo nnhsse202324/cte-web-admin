@@ -61,42 +61,41 @@ route.post("/courses", async (req, res) => {
     }
   }
 
-  if (earnedCertificates.length === 0) {
-    req.student.certificates = earnedCertificates;
-  } else {
-    const certificates = earnedCertificates.map((certificate) => ({
-      name: certificate,
-      year: new Date().getFullYear(), // gets latest year
-    }));
+  const certificates = earnedCertificates.map((certificate) => ({
+    name: certificate,
+    year: new Date().getFullYear(), // gets latest year
+  }));
 
-    // check if the student is no longer eligible for any of the certificates previous stored;
-    //  this could happen if a student selected some classes and then went back and unselected some
-    for (let i = 0; i < req.student.certificates.length; i++) {
-      if (!earnedCertificates.includes(req.student.certificates[i].name)) {
-        console.log(
-          "removing certificate: " +
-            req.student.certificates[i].name +
-            " from student: " +
-            req.student.email
-        );
+  // check if the student is no longer eligible for any of the certificates previous stored;
+  //  this could happen if a student selected some classes and then went back and unselected some
+  for (let i = 0; i < req.student.certificates.length; i++) {
+    if (
+      !earnedCertificates.includes(req.student.certificates[i].name) &&
+      req.student.certificates[i].year === new Date().getFullYear()
+    ) {
+      console.log(
+        "removing certificate: " +
+          req.student.certificates[i].name +
+          " from student: " +
+          req.student.email
+      );
 
-        req.student.certificates.splice(i, 1);
-        i--;
-      }
+      req.student.certificates.splice(i, 1);
+      i--;
     }
-
-    // makes temp variable to save all certificate names
-    const claimedCertificateNames = req.student.certificates.map((c) => c.name);
-
-    // compares claimed certificate name to certificate you want to claim
-    const uniqueCertificates = certificates.filter((certificate) => {
-      return !claimedCertificateNames.includes(certificate.name);
-    });
-
-    // adds unique certificate list to certificates
-    req.student.certificates =
-      req.student.certificates.concat(uniqueCertificates);
   }
+
+  // makes temp variable to save all certificate names
+  const claimedCertificateNames = req.student.certificates.map((c) => c.name);
+
+  // compares claimed certificate name to certificate you want to claim
+  const uniqueCertificates = certificates.filter((certificate) => {
+    return !claimedCertificateNames.includes(certificate.name);
+  });
+
+  // adds unique certificate list to certificates
+  req.student.certificates =
+    req.student.certificates.concat(uniqueCertificates);
 
   await req.student.save();
 
@@ -341,7 +340,10 @@ async function updateCourseNameAndCertificates() {
       // check if the student is no longer eligible for any of the certificates previous stored;
       //  this could happen if a student selected some classes and then went back and unselected some
       for (let i = 0; i < student.certificates.length; i++) {
-        if (!earnedCertificates.includes(student.certificates[i].name)) {
+        if (
+          !earnedCertificates.includes(student.certificates[i].name) &&
+          student.certificates[i].year === new Date().getFullYear()
+        ) {
           console.log(
             "removing certificate: " +
               student.certificates[i].name +
