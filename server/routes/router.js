@@ -76,6 +76,22 @@ route.post("/courses", async (req, res) => {
       year: new Date().getFullYear(), // gets latest year
     }));
 
+    // check if the student is no longer eligible for any of the certificates previous stored;
+    //  this could happen if a student selected some classes and then went back and unselected some
+    for (let i = 0; i < req.student.certificates.length; i++) {
+      if (!earnedCertificates.includes(req.student.certificates[i].name)) {
+        console.log(
+          "removing certificate: " +
+            req.student.certificates[i].name +
+            " from student: " +
+            req.student.email
+        );
+
+        req.student.certificates.splice(i, 1);
+        i--;
+      }
+    }
+
     // makes temp variable to save all certificate names
     const claimedCertificateNames = req.student.certificates.map((c) => c.name);
 
@@ -240,6 +256,11 @@ route.get("/export", async (req, res) => {
   }
 });
 
+route.get("/fixData", async (req, res) => {
+  await updateCourseNameAndCertificates();
+  res.redirect("courses");
+});
+
 async function getStudentDataTabDelimited() {
   try {
     const allStudents = await Student.find();
@@ -262,6 +283,30 @@ async function getStudentDataTabDelimited() {
   } catch (error) {
     console.error("Error fetching the student data.", error);
     return ""; // Return an empty string in case of an error
+  }
+}
+
+async function updateCourseNameAndCertificates() {
+  const allStudents = await Student.find();
+
+  for (let i = 0; i < allStudents.length; i++) {
+    const student = allStudents[i];
+    for (let j = 0; j < student.courses.length; j++) {
+      if (student.courses[j].name === "Introdution to Business") {
+        let duplicateCourse = false;
+        for (let k = j; k < student.courses.length; k++) {
+          if (student.courses[k].name === "Introduction to Business") {
+            duplicateCourse = true;
+          }
+        }
+        if (duplicateCourse) {
+          student.courses.splice(j, 1);
+        } else {
+          student.courses[j].name = "Introduction to Business";
+        }
+        await student.save();
+      }
+    }
   }
 }
 
